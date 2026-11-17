@@ -773,25 +773,32 @@
     }
 
     renderLanguageSelectors() {
-      // 1. Top Header Quick Selector
+      const cur = SUPPORTED_LANGUAGES[this.currentLang] || SUPPORTED_LANGUAGES.en;
+
+      // 1. Update Header Label if static pill exists
+      const labelEl = document.getElementById('currentLangLabel');
+      if (labelEl) {
+        labelEl.innerText = `${cur.native} (${cur.name})`;
+      }
+
+      // 2. Top Header Quick Selector
       const topContainer = document.getElementById('topLanguageSelectorContainer');
       if (topContainer) {
-        const cur = SUPPORTED_LANGUAGES[this.currentLang] || SUPPORTED_LANGUAGES.en;
         topContainer.innerHTML = `
           <div class="lang-dropdown-wrapper" style="position: relative;">
-            <button class="btn btn-ghost lang-pill-btn" onclick="window.formaI18n.toggleLangDropdown()" title="Change Language / ಭಾಷೆ ಬದಲಾಯಿಸಿ" style="padding: 5px 12px; font-size: 0.75rem; border-radius: 20px; display: inline-flex; align-items: center; gap: 6px;">
+            <button class="btn btn-ghost lang-pill-btn" onclick="window.formaI18n.toggleLangDropdown()" title="Change Language / ಭಾಷೆ ಬದಲಾಯಿಸಿ" style="padding: 6px 14px; font-size: 0.78rem; border-radius: 20px; display: inline-flex; align-items: center; gap: 6px; background: rgba(255, 255, 255, 0.08); border: 1px solid rgba(255, 255, 255, 0.2); color: #FFF; cursor: pointer;">
               <span style="font-size: 0.95rem;">🌐</span>
-              <span style="font-weight: 700; color: #FFF;">${cur.native}</span>
-              <span style="font-size: 0.65rem; color: var(--accent-orange);">▼</span>
+              <span id="currentLangLabel" style="font-weight: 700; color: #FFF;">${cur.native} (${cur.name})</span>
+              <span style="font-size: 0.65rem; color: #38BDF8;">▼</span>
             </button>
-            <div id="topLangDropdownMenu" class="forma-card lang-dropdown-menu" style="display: none; position: absolute; top: calc(100% + 8px); right: 0; min-width: 170px; padding: 8px; z-index: 1000; box-shadow: 0 12px 32px rgba(0,0,0,0.6);">
+            <div id="topLangDropdownMenu" class="forma-card lang-dropdown-menu" style="display: none; position: absolute; top: calc(100% + 8px); right: 0; min-width: 185px; padding: 8px; z-index: 1000; box-shadow: 0 12px 32px rgba(0,0,0,0.7); background: #18191E; border: 1px solid rgba(255, 255, 255, 0.15); border-radius: 10px;">
               ${Object.keys(SUPPORTED_LANGUAGES).map(code => {
                 const item = SUPPORTED_LANGUAGES[code];
                 const isActive = code === this.currentLang;
                 return `
-                  <button class="lang-option-btn ${isActive ? 'active' : ''}" onclick="window.setLanguage('${code}')" style="display: flex; align-items: center; justify-content: space-between; width: 100%; padding: 8px 12px; border: none; background: ${isActive ? 'rgba(255, 113, 56, 0.16)' : 'transparent'}; color: ${isActive ? 'var(--accent-orange)' : '#CBD5E1'}; border-radius: 8px; cursor: pointer; font-size: 0.8125rem; font-weight: ${isActive ? '800' : '600'}; text-align: left; transition: all 0.15s ease;">
-                    <span>${item.native}</span>
-                    <span style="font-size: 0.7rem; color: ${isActive ? 'var(--accent-orange)' : '#64748B'};">${item.name}</span>
+                  <button class="lang-option-btn ${isActive ? 'active' : ''}" onclick="window.setLanguage('${code}')" style="display: flex; align-items: center; justify-content: space-between; width: 100%; padding: 8px 12px; border: none; background: ${isActive ? 'rgba(56, 189, 248, 0.16)' : 'transparent'}; color: ${isActive ? '#38BDF8' : '#CBD5E1'}; border-radius: 8px; cursor: pointer; font-size: 0.8125rem; font-weight: ${isActive ? '800' : '600'}; text-align: left; transition: all 0.15s ease;">
+                    <span style="${code === 'kn' ? 'font-weight: 700;' : ''}">${item.native}</span>
+                    <span style="font-size: 0.7rem; color: ${isActive ? '#38BDF8' : '#64748B'};">${item.name}</span>
                   </button>
                 `;
               }).join('')}
@@ -800,7 +807,13 @@
         `;
       }
 
-      // 2. Profile View Language Section Dropdown
+      // 3. Sidebar Language Selector
+      const sidebarSelect = document.getElementById('sidebarLanguageSelect');
+      if (sidebarSelect) {
+        sidebarSelect.value = this.currentLang;
+      }
+
+      // 4. Profile View Language Section Dropdown
       const profSelect = document.getElementById('profLanguageSelect');
       if (profSelect) {
         profSelect.innerHTML = Object.keys(SUPPORTED_LANGUAGES).map(code => {
@@ -876,10 +889,13 @@
   window.setLanguage = (lang) => i18n.setLanguage(lang);
   window.t = (key, fallback) => i18n.t(key, fallback);
 
-  // Auto-init on load
-  document.addEventListener('DOMContentLoaded', () => {
+  // Auto-init immediately if DOM is ready, or on DOMContentLoaded/load
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => i18n.init());
+  } else {
     i18n.init();
-  });
+  }
+  window.addEventListener('load', () => i18n.init());
 
 })();
 
