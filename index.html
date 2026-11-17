@@ -1,0 +1,1214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FORMA — Elite Fitness & Performance Engine</title>
+  
+  <!-- Dependencies: Chart.js & Lucide Icons -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <!-- Sci-fi / Tactical Monospace Fonts for Hunter System -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Orbitron:wght@600;800;900&display=swap" rel="stylesheet">
+
+  <!-- FORMA Core Modular Stylesheet & Hunter Meal HUD -->
+  <link rel=stylesheet href="css/styles.css">
+  <link rel=stylesheet href="css/hunter-meal.css">
+</head>
+<body>
+  <div class="app-container">
+
+    <!-- COLLAPSIBLE SIDEBAR -->
+    <aside class="sidebar" id="appSidebar">
+      <div class="sidebar-brand">
+        <div>
+          <div class="brand-title">FORMA</div>
+          <div class="brand-subtitle" style="font-size: 0.65rem; color: var(--text-secondary); letter-spacing: 0.1em; text-transform: uppercase;">Performance Pro</div>
+        </div>
+        <button id="sidebarToggleBtn" class="btn btn-ghost" style="padding: 4px; border: none;">
+          <i data-lucide="panel-left-close" style="width: 18px; height: 18px;"></i>
+        </button>
+      </div>
+
+      <nav class="sidebar-nav">
+        <button class="nav-btn active" data-view="dashboard">
+          <i data-lucide="layout-dashboard" style="width: 18px; height: 18px;"></i>
+          <span class="nav-label">Dashboard</span>
+        </button>
+        <button class="nav-btn" data-view="workout">
+          <i data-lucide="dumbbell" style="width: 18px; height: 18px;"></i>
+          <span class="nav-label">Workout Tracker</span>
+        </button>
+        <button class="nav-btn" data-view="programs">
+          <i data-lucide="layers" style="width: 18px; height: 18px;"></i>
+          <span class="nav-label">Training Programs</span>
+        </button>
+        <button class="nav-btn" data-view="library">
+          <i data-lucide="book-open" style="width: 18px; height: 18px;"></i>
+          <span class="nav-label">Exercise Library</span>
+        </button>
+        <button class="nav-btn" data-view="nutrition">
+          <i data-lucide="utensils" style="width: 18px; height: 18px;"></i>
+          <span class="nav-label">Meal Tracker</span>
+        </button>
+        <button class="nav-btn" data-view="progress">
+          <i data-lucide="line-chart" style="width: 18px; height: 18px;"></i>
+          <span class="nav-label">Progress & Metrics</span>
+        </button>
+        <button class="nav-btn" data-view="recovery">
+          <i data-lucide="heart-pulse" style="width: 18px; height: 18px;"></i>
+          <span class="nav-label">Recovery & Sleep</span>
+        </button>
+        <button class="nav-btn" data-view="achievements">
+          <i data-lucide="trophy" style="width: 18px; height: 18px;"></i>
+          <span class="nav-label">Achievements</span>
+        </button>
+        <button class="nav-btn" data-view="profile">
+          <i data-lucide="user" style="width: 18px; height: 18px;"></i>
+          <span class="nav-label">Profile & Targets</span>
+        </button>
+      </nav>
+
+      <div class="sidebar-footer">
+        <div class="avatar-circle" id="sidebarAvatar">A</div>
+        <div class="user-details">
+          <div style="font-size: 0.8125rem; font-weight: 600;" id="sidebarUserName">Athlete User</div>
+          <div style="font-size: 0.6875rem; color: var(--text-secondary);" id="sidebarUserGoal">Muscle Gain</div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- VIEWPORT WRAPPER -->
+    <div class="main-viewport">
+      <!-- SYSTEM TOPBAR -->
+      <header class="top-header">
+        <div class="header-status">
+          <div class="status-dot"></div>
+          <span>PERSISTENT CORE: SYNCHRONIZED</span>
+          <span style="color: var(--border-medium);">|</span>
+          <span id="systemClockDisplay" style="font-variant-numeric: tabular-nums; color: var(--text-primary);">--:--:--</span>
+        </div>
+        <div style="display: flex; gap: 10px; align-items: center;">
+          <!-- Multi-Device Athlete Account Pill -->
+          <button id="headerAuthBtn" class="auth-pill unauthenticated" onclick="openAuthModal('signin')" title="Athlete Account & Multi-Device Sync">
+            <span style="width: 7px; height: 7px; border-radius: 50%; background: #F59E0B; display: inline-block;"></span>
+            <span style="font-size: 0.72rem; color: #D1D5DB; font-weight: 700; letter-spacing: 0.08em;">SIGN IN / REGISTER</span>
+          </button>
+
+          <!-- Supabase Cloud Sync Status Badge -->
+          <button id="supabaseHeaderStatus" class="hunter-sync-badge offline" onclick="openSupabaseConfigModal()" title="Supabase Cloud Connection">
+            <span class="hunter-sync-dot"></span>
+            <span class="sync-text">LOCAL OFFLINE</span>
+          </button>
+          <button class="sys-icon-btn-ghost" onclick="openSupabaseConfigModal()" title="Supabase Database Settings">
+            <i data-lucide="settings" style="width: 15px; height: 15px;"></i>
+          </button>
+          <button class="btn btn-ghost" id="quickAddMealBtn">
+            <i data-lucide="plus" style="width: 14px; height: 14px;"></i> Log Food
+          </button>
+          <button class="btn btn-silver" id="topStartWorkoutBtn">
+            <i data-lucide="play" style="width: 14px; height: 14px;"></i> Start Session
+          </button>
+        </div>
+      </header>
+
+      <!-- CONTENT PANELS OUTLET -->
+      <main class="content-area">
+
+        <!-- 1. VIEW: DASHBOARD -->
+        <section id="view-dashboard" class="view-panel active">
+          <!-- LIVE TELEMETRY BANNER -->
+          <div class="dash-telemetry-banner">
+            <div style="display: flex; align-items: center; gap: 12px;">
+              <span class="live-stream-badge">
+                <span class="live-pulse-dot"></span> LIVE BIOMETRIC & PERFORMANCE STREAM
+              </span>
+              <span style="font-size: 0.75rem; color: var(--text-tertiary);">|</span>
+              <span style="font-size: 0.75rem; color: #94A3B8;">SYNC: <b id="dashSyncTimestamp" style="color: #F8FAFC;">LIVE</b></span>
+            </div>
+            <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+              <span class="focus-badge" style="padding: 2px 8px; font-size: 0.65rem; background: rgba(0, 229, 153, 0.1); border-color: rgba(0, 229, 153, 0.3); color: #00e599;">FUEL CORE: LINKED</span>
+              <span class="focus-badge" style="padding: 2px 8px; font-size: 0.65rem; background: rgba(56, 189, 248, 0.1); border-color: rgba(56, 189, 248, 0.3); color: #38BDF8;">KINEMATICS: 60FPS</span>
+              <span class="focus-badge" style="padding: 2px 8px; font-size: 0.65rem; background: rgba(245, 158, 11, 0.1); border-color: rgba(245, 158, 11, 0.3); color: #f59e0b;">RECOVERY: OPTIMAL</span>
+            </div>
+          </div>
+
+          <!-- METRIC KPI TILES -->
+          <div class="dashboard-grid" style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));">
+            <div class="forma-card">
+              <div class="stat-label">Consistency Streak</div>
+              <div class="stat-value"><span id="dashStreakVal">14</span> <span class="stat-unit">Days</span></div>
+              <div class="progress-bar-track"><div class="progress-bar-fill" style="width: 100%; background: #f59e0b; box-shadow: 0 0 8px rgba(245, 158, 11, 0.4);"></div></div>
+            </div>
+
+            <div class="forma-card">
+              <div class="stat-label">Daily Calories</div>
+              <div class="stat-value"><span id="dashCalVal">0</span> <span class="stat-unit">/ <span id="dashCalTarget">2000</span> kcal</span></div>
+              <div class="progress-bar-track"><div class="progress-bar-fill" id="dashCalBar" style="width: 0%; background: #f59e0b; box-shadow: 0 0 8px rgba(245, 158, 11, 0.3);"></div></div>
+            </div>
+
+            <div class="forma-card">
+              <div class="stat-label">Protein Intake</div>
+              <div class="stat-value"><span id="dashProVal">0</span> <span class="stat-unit">/ <span id="dashProTarget">120</span> g</span></div>
+              <div class="progress-bar-track"><div class="progress-bar-fill" id="dashProBar" style="width: 0%; background: #818cf8; box-shadow: 0 0 8px rgba(129, 140, 248, 0.3);"></div></div>
+            </div>
+
+            <div class="forma-card">
+              <div class="stat-label">Weekly Training Volume</div>
+              <div class="stat-value"><span id="dashVolVal">143,300</span> <span class="stat-unit">kg</span></div>
+              <div style="margin-top: 10px; font-size: 0.75rem; color: var(--silver-subtle);">Cumulative external tonnage</div>
+            </div>
+
+            <div class="forma-card">
+              <div class="stat-label">Hydration Level</div>
+              <div class="stat-value"><span id="dashWaterVal" style="color: #00d2ff;">0L</span> <span class="stat-unit">/ 3L</span></div>
+              <div style="margin-top: 10px; font-size: 0.75rem; color: #00d2ff;">Live Water Bottle Sync</div>
+            </div>
+          </div>
+
+          <!-- CHARTS SECTION -->
+          <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 20px; margin-bottom: 24px;" class="dash-chart-row">
+            <div class="forma-card">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+                <h3 style="font-size: 0.9375rem; font-weight: 600;">Volume Load Trajectory (kg)</h3>
+                <span style="font-size: 0.75rem; color: var(--text-secondary);">Last 7 Sessions</span>
+              </div>
+              <div style="height: 250px;"><canvas id="chartDashVolume"></canvas></div>
+            </div>
+
+            <div class="forma-card">
+              <h3 style="font-size: 0.9375rem; font-weight: 600; margin-bottom: 16px;">Macronutrient Proportions</h3>
+              <div style="height: 180px;"><canvas id="chartDashMacros"></canvas></div>
+              <div id="dashMacroSummaryText" style="display: flex; justify-content: space-around; margin-top: 16px; font-size: 0.75rem; text-align: center;">
+                <div><div style="color: var(--text-secondary);">Carbs</div><b id="dashCarbTotal">0g</b></div>
+                <div><div style="color: var(--text-secondary);">Protein</div><b id="dashProteinTotal">0g</b></div>
+                <div><div style="color: var(--text-secondary);">Fats</div><b id="dashFatTotal">0g</b></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- DYNAMIC ACTIVE TRAINING ASSIGNMENT / LIVE SESSION CONTAINER -->
+          <div id="dashActiveSessionContainer">
+            <div class="forma-card">
+              <div style="display: flex; justify-content: space-between; align-items: center;">
+                <div>
+                  <div class="stat-label">Active Training Assignment</div>
+                  <h2 style="font-size: 1.25rem; font-weight: 700; margin-top: 4px;" id="dashAssignedWorkout">Upper Body Strength (Push Focus)</h2>
+                  <p style="font-size: 0.8125rem; color: var(--text-secondary); margin-top: 4px;">4 exercises • Estimated 50 min duration</p>
+                </div>
+                <button class="btn btn-silver" id="dashLaunchAssignedBtn" onclick="startWorkoutSession('Upper Body Hypertrophy')">
+                  <i data-lucide="play" style="width: 14px; height: 14px;"></i> Load Into Tracker
+                </button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- 2. VIEW: WORKOUT TRACKER -->
+        <section id="view-workout" class="view-panel">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+            <div>
+              <h1 style="font-size: 1.5rem; font-weight: 700;">Active Workout Session</h1>
+              <p style="font-size: 0.8125rem; color: var(--text-secondary);">Real-time set logging with Brzycki 1RM computation and audio rest countdown</p>
+            </div>
+            <div style="display: flex; gap: 8px;">
+              <button class="btn btn-ghost" id="workoutAddExerciseBtn"><i data-lucide="plus" style="width: 14px; height: 14px;"></i> Add Exercise</button>
+              <button class="btn btn-danger" id="workoutCancelBtn">Cancel</button>
+              <button class="btn btn-silver" id="workoutFinishBtn"><i data-lucide="check" style="width: 14px; height: 14px;"></i> Finish Workout</button>
+            </div>
+          </div>
+
+          <!-- Session Controls Banner -->
+          <div class="forma-card" style="margin-bottom: 20px; display: flex; align-items: center; justify-content: space-between;">
+            <div>
+              <input type="text" id="workoutSessionTitle" class="form-control" value="Afternoon Hypertrophy Split" style="font-weight: 700; font-size: 1rem; width: 320px; background: transparent; border: 1px dashed var(--border-medium);">
+            </div>
+            <div style="display: flex; align-items: center; gap: 24px;">
+              <div>
+                <span class="stat-label">Elapsed</span>
+                <div id="trackerDurationTimer" style="font-size: 1.25rem; font-weight: 700; font-variant-numeric: tabular-nums;">00:00</div>
+              </div>
+              <div>
+                <span class="stat-label">External Volume</span>
+                <div id="trackerVolumeTotal" style="font-size: 1.25rem; font-weight: 700;">0 kg</div>
+              </div>
+              <div>
+                <span class="stat-label">Completed Sets</span>
+                <div id="trackerSetsTotal" style="font-size: 1.25rem; font-weight: 700;">0</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Exercise Sets List Container -->
+          <div id="workoutExercisesList" style="display: flex; flex-direction: column; gap: 16px;">
+            <!-- Dynamically Rendered Exercises -->
+          </div>
+        </section>
+
+        <!-- 3. VIEW: TRAINING PROGRAMS -->
+        <section id="view-programs" class="view-panel">
+          <div style="margin-bottom: 24px;">
+            <h1 style="font-size: 1.5rem; font-weight: 700;">Periodized Training Programs</h1>
+            <p style="font-size: 0.8125rem; color: var(--text-secondary);">Structured 10-program catalog with double-progression schemes</p>
+          </div>
+          <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 20px;" id="programsContainer">
+            <!-- Dynamically populated from program catalog -->
+          </div>
+        </section>
+
+        <!-- 4. VIEW: EXERCISE LIBRARY -->
+        <section id="view-library" class="view-panel">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 12px;">
+            <div>
+              <div style="display: flex; align-items: center; gap: 10px;">
+                <h1 style="font-size: 1.5rem; font-weight: 700;">Biomechanical Exercise Directory</h1>
+                <span class="live-indicator-pill">
+                  <span class="live-dot"></span> LIVE PREVIEW
+                </span>
+              </div>
+              <p style="font-size: 0.8125rem; color: var(--text-secondary); margin-top: 4px;">Real-time humanoid biomechanics, target muscle activations & kinematic form</p>
+            </div>
+            <div style="display: flex; gap: 10px;">
+              <button class="btn btn-silver" id="createCustomExerciseBtn"><i data-lucide="plus" style="width: 14px; height: 14px;"></i> Custom Exercise</button>
+            </div>
+          </div>
+
+          <!-- FEATURED LIVE EXERCISE VIDEO PREVIEW SCREEN -->
+          <div class="forma-card library-preview-card" id="libraryVideoPreviewContainer" style="margin-bottom: 24px; padding: 0; overflow: hidden; border: 1px solid rgba(56, 189, 248, 0.28); background: #0E0E10; border-radius: 18px; box-shadow: 0 12px 36px rgba(0,0,0,0.65);">
+            
+            <!-- Video Showcase Header -->
+            <div style="display: flex; justify-content: space-between; align-items: center; padding: 12px 20px; border-bottom: 1px solid rgba(255, 255, 255, 0.08); background: #131316; flex-wrap: wrap; gap: 10px;">
+              <div style="display: flex; align-items: center; gap: 10px;">
+                <span style="font-size: 0.75rem; font-weight: 800; letter-spacing: 0.08em; color: #38BDF8; text-transform: uppercase; display: flex; align-items: center; gap: 6px;">
+                  <i data-lucide="video" style="width: 14px; height: 14px; color: #38BDF8;"></i> Live Exercise Demonstration
+                </span>
+                <span style="font-size: 0.75rem; color: var(--text-tertiary);">•</span>
+                <span id="libPreviewIndexBadge" style="font-size: 0.75rem; font-weight: 700; color: #94A3B8;">1/9</span>
+              </div>
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <button class="btn btn-ghost" style="padding: 4px 10px; font-size: 0.75rem;" onclick="loadNextLibraryExercise(-1)" title="Previous Exercise">
+                  <i data-lucide="chevron-left" style="width: 14px; height: 14px;"></i> Prev
+                </button>
+                <button class="btn btn-ghost" id="libPreviewPlayPauseBtn" style="padding: 4px 10px; font-size: 0.75rem; color: #38BDF8;" onclick="toggleLibraryVideoPlay()" title="Play / Pause Video">
+                  <i data-lucide="pause" id="libPreviewPlayPauseIcon" style="width: 14px; height: 14px;"></i>
+                </button>
+                <button class="btn btn-ghost" style="padding: 4px 10px; font-size: 0.75rem;" onclick="loadNextLibraryExercise(1)" title="Next Exercise">
+                  Next <i data-lucide="chevron-right" style="width: 14px; height: 14px;"></i>
+                </button>
+                <button class="btn btn-silver" style="padding: 5px 14px; font-size: 0.75rem; display: inline-flex; align-items: center; gap: 6px; border-radius: 8px;" onclick="openCinemaModal(currentLibraryExerciseIndex)">
+                  <i data-lucide="maximize-2" style="width: 12px; height: 12px;"></i> Fullscreen Cinema
+                </button>
+              </div>
+            </div>
+
+            <!-- Video Player & Telemetry Grid -->
+            <div class="library-preview-body" style="display: grid; grid-template-columns: minmax(300px, 1.15fr) minmax(320px, 1.35fr); gap: 0;">
+              
+              <!-- Video Viewport -->
+              <div style="position: relative; background: #F8FAFC; min-height: 290px; display: flex; align-items: center; justify-content: center; border-right: 1px solid rgba(255,255,255,0.08); overflow: hidden;">
+                <canvas id="libraryCinemaCanvas" style="width: 100%; height: 290px; display: block;"></canvas>
+                <div style="position: absolute; bottom: 12px; left: 14px; background: rgba(15, 23, 42, 0.88); backdrop-filter: blur(8px); padding: 4px 12px; border-radius: 20px; font-size: 0.6875rem; color: #38BDF8; font-weight: 700; border: 1px solid rgba(56, 189, 248, 0.3); display: flex; align-items: center; gap: 6px;">
+                  <span style="width: 6px; height: 6px; border-radius: 50%; background: #38BDF8; display: inline-block;"></span>
+                  60 FPS Kinematics Engine
+                </div>
+              </div>
+
+              <!-- Exercise Telemetry & Info -->
+              <div style="padding: 22px 24px; display: flex; flex-direction: column; justify-content: space-between; background: #111114;">
+                <div>
+                  <div style="display: flex; gap: 8px; margin-bottom: 10px; flex-wrap: wrap;">
+                    <span id="libPreviewCategory" class="focus-badge" style="padding: 3px 12px; font-size: 0.7rem;">Cardio</span>
+                    <span id="libPreviewEquipment" class="focus-badge" style="padding: 3px 12px; font-size: 0.7rem; background: #0F172A; color: #94A3B8;">None</span>
+                  </div>
+                  <h2 id="libPreviewTitle" style="font-size: 1.4rem; font-weight: 800; letter-spacing: -0.01em; color: #FFF; margin-bottom: 10px; text-transform: uppercase;">
+                    Jumping Jacks
+                  </h2>
+                  <p id="libPreviewInstructions" style="font-size: 0.8125rem; line-height: 1.55; color: #CBD5E1; margin-bottom: 18px;">
+                    Start with your feet together and your arms by your sides, then jump up with your feet apart and your hands overhead.
+                  </p>
+
+                  <div style="margin-bottom: 10px;">
+                    <div style="font-size: 0.7rem; font-weight: 800; color: #38BDF8; letter-spacing: 0.06em; margin-bottom: 8px; text-transform: uppercase;">
+                      Prime Movers & Target Activation
+                    </div>
+                    <div id="libPreviewMuscleBars" style="display: flex; flex-direction: column; gap: 7px;">
+                      <!-- Injected dynamically -->
+                    </div>
+                  </div>
+                </div>
+
+                <div style="display: flex; align-items: center; justify-content: space-between; margin-top: 16px; padding-top: 14px; border-top: 1px solid rgba(255,255,255,0.06); flex-wrap: wrap; gap: 10px;">
+                  <span style="font-size: 0.75rem; color: var(--text-secondary); display: flex; align-items: center; gap: 5px;">
+                    <i data-lucide="info" style="width: 12px; height: 12px; color: #38BDF8;"></i> Select any card below to preview movement
+                  </span>
+                  <button class="btn btn-ghost" id="libPreviewAddToWorkoutBtn" style="padding: 6px 14px; font-size: 0.75rem; border-color: rgba(56, 189, 248, 0.4); color: #38BDF8;" onclick="addCurrentPreviewToWorkout()">
+                    <i data-lucide="plus" style="width: 12px; height: 12px; margin-right: 4px;"></i> Add to Workout Log
+                  </button>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- Filter Toolbar -->
+          <div class="forma-card" style="margin-bottom: 20px; display: flex; gap: 14px; align-items: center;">
+            <div style="flex: 1;">
+              <input type="text" id="exerciseSearchInput" class="form-control" placeholder="Search exercises (e.g., Squat, Pull-Up, Bench)...">
+            </div>
+            <div style="width: 200px;">
+              <select id="exerciseCategoryFilter" class="form-control">
+                <option value="ALL">All Muscle Groups</option>
+                <option value="Chest">Chest</option>
+                <option value="Back">Back</option>
+                <option value="Quadriceps">Quadriceps</option>
+                <option value="Hamstrings">Hamstrings</option>
+                <option value="Shoulders">Shoulders</option>
+                <option value="Arms">Arms</option>
+                <option value="Core">Core</option>
+                <option value="Cardio">Cardio & Full Body</option>
+              </select>
+            </div>
+          </div>
+
+          <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px;" id="exerciseLibraryCards">
+            <!-- Injected dynamically -->
+          </div>
+        </section>
+
+        <!-- 5. VIEW: MEAL TRACKER & NUTRITION ENGINE (HUNTER SYSTEM HUD) -->
+        <section id="view-nutrition" class="view-panel">
+          <!-- Top Header -->
+          <div class="hunter-view-header">
+            <div>
+              <div class="hunter-title-row">
+                <h1 style="font-size: 1.5rem; font-weight: 700; font-family: 'Chakra Petch', sans-serif; letter-spacing: 0.04em;">Hunter System — Meal & Biometric Tracker</h1>
+                <span class="hunter-badge-pill">
+                  <span class="hunter-badge-dot"></span> SYNCED • FUEL HUD
+                </span>
+              </div>
+              <p style="font-size: 0.8125rem; color: var(--text-secondary); margin-top: 4px;">Tactical macronutrient partition, dynamic hydration logs & weekly prep protocol</p>
+            </div>
+            <div style="display: flex; gap: 10px;">
+              <button class="btn-chamfer btn-secondary" onclick="window.hunterTracker.openModal('hunterAddMealModal')">
+                + LOG MEAL
+              </button>
+            </div>
+          </div>
+
+          <!-- Date Navigator -->
+          <div class="date-navigator">
+            <button class="nav-chamfer-btn prev" id="prevDayBtn" aria-label="Previous Day">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>
+            </button>
+
+            <div class="date-center">
+              <div class="date-label-badge" id="currentDateTitle">TODAY</div>
+              <div class="date-subtext" id="currentDateText">2026-11-17</div>
+            </div>
+
+            <button class="nav-chamfer-btn next" id="nextDayBtn" aria-label="Next Day">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+            </button>
+          </div>
+
+          <!-- CARD 1: DAILY PROGRESS -->
+          <section class="hunter-card">
+            <div class="card-inner">
+              <div class="card-header">
+                <div class="card-title">
+                  <span class="title-square"></span>
+                  <span class="title-text">Daily Progress</span>
+                </div>
+                <button class="link-btn" id="editTargetsBtn">Edit Targets</button>
+              </div>
+
+              <!-- Calories Metric -->
+              <div class="metric-row">
+                <div class="metric-top">
+                  <div class="metric-label calories-label">
+                    <span class="metric-icon flame-icon">🔥</span>
+                    <span>CALORIES</span>
+                  </div>
+                  <div class="metric-value calories-val">
+                    <span id="calCurrent">0</span> / <span id="calTarget">2000</span> kcal
+                  </div>
+                </div>
+                <div class="progress-track calories-track">
+                  <div class="progress-fill calories-fill" id="calFill" style="width: 0%;"></div>
+                </div>
+              </div>
+
+              <!-- Protein Metric -->
+              <div class="metric-row">
+                <div class="metric-top">
+                  <div class="metric-label protein-label">
+                    <span class="metric-icon bolt-icon">⚡</span>
+                    <span>PROTEIN</span>
+                  </div>
+                  <div class="metric-value protein-val">
+                    <span id="proCurrent">0</span>g / <span id="proTarget">120</span>g
+                  </div>
+                </div>
+                <div class="progress-track protein-track">
+                  <div class="progress-fill protein-fill" id="proFill" style="width: 0%;"></div>
+                </div>
+              </div>
+
+              <!-- Water Metric Controller -->
+              <div class="water-controller-row">
+                <div class="water-left">
+                  <span class="water-icon">💧</span>
+                  <span class="water-title">WATER</span>
+                  <button class="water-badge-toggle" id="waterGoalToggle">
+                    LITERS (3L GOAL) <span class="arrow-sym">⇄</span>
+                  </button>
+                </div>
+
+                <div class="water-controls-right">
+                  <button class="btn-chamfer btn-sm" id="waterDecBtn">−</button>
+                  <div class="water-counter-display">
+                    <span class="water-digit" id="waterCurrentDisplay">0L</span>
+                    <span class="water-total">/ 3L</span>
+                  </div>
+                  <button class="btn-chamfer btn-sm" id="waterIncBtn">+</button>
+                  <button class="btn-chamfer btn-cyan" id="waterAddBottleBtn">+ 1L BOTTLE</button>
+                </div>
+              </div>
+
+              <!-- 3 Interactive Bottle Cards -->
+              <div class="bottles-grid">
+                <button class="bottle-card" data-bottle="1" id="bottle1Btn">
+                  <div class="bottle-name">BOTTLE 1</div>
+                  <div class="bottle-sub">1.0 Liter</div>
+                </button>
+                <button class="bottle-card" data-bottle="2" id="bottle2Btn">
+                  <div class="bottle-name">BOTTLE 2</div>
+                  <div class="bottle-sub">2.0 Liter</div>
+                </button>
+                <button class="bottle-card" data-bottle="3" id="bottle3Btn">
+                  <div class="bottle-name">BOTTLE 3</div>
+                  <div class="bottle-sub">3.0 Liter</div>
+                </button>
+              </div>
+
+              <div class="water-legend-row">
+                <span>1 bottle = 1.0 Litre</span>
+                <span>Goal: 3 Litres (3 bottles)</span>
+              </div>
+            </div>
+          </section>
+
+          <!-- CARD 2: LOG MEAL -->
+          <section class="hunter-card">
+            <div class="card-inner">
+              <div class="card-header">
+                <div class="card-title">
+                  <span class="title-square"></span>
+                  <span class="title-text">Log Meal</span>
+                </div>
+                <div class="card-actions">
+                  <button class="btn-chamfer btn-secondary" id="openFavoritesBtn">
+                    <span class="apple-icon">🍎</span> FAVORITES
+                  </button>
+                  <button class="btn-chamfer btn-secondary" id="openAddMealBtn">
+                    + ADD
+                  </button>
+                </div>
+              </div>
+
+              <!-- Dynamic Meals Container -->
+              <div class="meals-list" id="mealsContainer">
+                <div class="empty-state-text">
+                  No meals logged for this day. Tap + Add to start tracking.
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- CARD 3: 7-DAY OVERVIEW -->
+          <section class="hunter-card">
+            <div class="card-inner">
+              <div class="card-header">
+                <div class="card-title">
+                  <span class="title-square"></span>
+                  <span class="title-text">7-Day Overview</span>
+                </div>
+              </div>
+
+              <!-- 7 Days Grid -->
+              <div class="seven-days-grid" id="weekGrid">
+                <div class="day-slot" data-day="WED">
+                  <div class="day-name">WED</div>
+                  <div class="day-dial"><span class="dial-dot"></span><span class="dial-num">0</span></div>
+                  <div class="day-foot">—</div>
+                </div>
+                <div class="day-slot" data-day="THU">
+                  <div class="day-name">THU</div>
+                  <div class="day-dial"><span class="dial-dot"></span><span class="dial-num">0</span></div>
+                  <div class="day-foot">—</div>
+                </div>
+                <div class="day-slot" data-day="FRI">
+                  <div class="day-name">FRI</div>
+                  <div class="day-dial"><span class="dial-dot"></span><span class="dial-num">0</span></div>
+                  <div class="day-foot">—</div>
+                </div>
+                <div class="day-slot" data-day="SAT">
+                  <div class="day-name">SAT</div>
+                  <div class="day-dial"><span class="dial-dot"></span><span class="dial-num">0</span></div>
+                  <div class="day-foot">—</div>
+                </div>
+                <div class="day-slot" data-day="SUN">
+                  <div class="day-name">SUN</div>
+                  <div class="day-dial"><span class="dial-dot"></span><span class="dial-num">0</span></div>
+                  <div class="day-foot">—</div>
+                </div>
+                <div class="day-slot" data-day="MON">
+                  <div class="day-name">MON</div>
+                  <div class="day-dial"><span class="dial-dot"></span><span class="dial-num">0</span></div>
+                  <div class="day-foot">—</div>
+                </div>
+                <div class="day-slot active-today" data-day="TUE">
+                  <div class="day-name">TUE</div>
+                  <div class="day-dial"><span class="dial-dot"></span><span class="dial-num">0</span></div>
+                  <div class="day-foot">—</div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- CARD 4: MEAL PREP PLAN -->
+          <section class="hunter-card">
+            <div class="card-inner">
+              <div class="card-header">
+                <div class="card-title">
+                  <span class="title-square"></span>
+                  <span class="title-text">Meal Prep Plan</span>
+                </div>
+                <button class="btn-chamfer btn-amber" id="editPlanBtn">
+                  <span class="pencil-icon">✏</span> + ADD PREP MEAL
+                </button>
+              </div>
+
+              <div class="prep-plan-list" id="prepPlanList">
+                <!-- Populated dynamically as checklist with interactive checkboxes -->
+              </div>
+            </div>
+          </section>
+        </section>
+
+        <!-- 6. VIEW: PROGRESS & BODY METRICS -->
+        <section id="view-progress" class="view-panel">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+            <div>
+              <h1 style="font-size: 1.5rem; font-weight: 700;">Progress Analytics & Metrics</h1>
+              <p style="font-size: 0.8125rem; color: var(--text-secondary);">Biometric trendlines and personal record verification</p>
+            </div>
+            <div style="display: flex; gap: 10px;">
+              <button class="btn btn-ghost" id="progressExportCsvBtn"><i data-lucide="download" style="width: 14px; height: 14px;"></i> Export Data (CSV)</button>
+              <button class="btn btn-silver" id="progressLogMetricBtn"><i data-lucide="plus" style="width: 14px; height: 14px;"></i> Log Weigh-In</button>
+            </div>
+          </div>
+
+          <div class="forma-card" style="margin-bottom: 20px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+              <h3 style="font-size: 1rem; font-weight: 600;">Body Mass Progression (kg)</h3>
+              <div style="font-size: 0.75rem; color: var(--text-secondary);">Historical weigh-ins</div>
+            </div>
+            <div style="height: 280px;"><canvas id="chartBodyWeight"></canvas></div>
+          </div>
+
+          <div class="forma-card">
+            <h3 style="font-size: 1rem; font-weight: 600; margin-bottom: 16px;">Verified Personal Records (1RM Brzycki Calculation)</h3>
+            <div style="overflow-x: auto;">
+              <table style="width: 100%; border-collapse: collapse; font-size: 0.875rem;">
+                <thead>
+                  <tr style="border-bottom: 1px solid var(--border-subtle); color: var(--text-secondary); text-align: left;">
+                    <th style="padding: 10px;">Exercise</th>
+                    <th style="padding: 10px;">Peak Weight</th>
+                    <th style="padding: 10px;">Est. 1RM</th>
+                    <th style="padding: 10px;">Date Logged</th>
+                  </tr>
+                </thead>
+                <tbody id="personalRecordsTableBody">
+                  <!-- Populated by State -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- 7. VIEW: RECOVERY & ACTIVITY -->
+        <section id="view-recovery" class="view-panel">
+          <div style="margin-bottom: 24px;">
+            <h1 style="font-size: 1.5rem; font-weight: 700;">Recovery & Hydration Tracker</h1>
+            <p style="font-size: 0.8125rem; color: var(--text-secondary);">Sleep duration, neuromuscular readiness, and daily water balances</p>
+          </div>
+
+          <div class="dashboard-grid">
+            <div class="forma-card">
+              <div class="stat-label">Hydration Intake</div>
+              <div class="stat-value"><span id="recoveryWaterDisplay">2,500</span> <span class="stat-unit">/ 3,500 ml</span></div>
+              <div style="display: flex; gap: 8px; margin-top: 14px;">
+                <button class="btn btn-ghost" id="addWater250Btn">+250 ml</button>
+                <button class="btn btn-ghost" id="addWater500Btn">+500 ml</button>
+                <button class="btn btn-ghost" id="resetWaterBtn">Reset</button>
+              </div>
+            </div>
+
+            <div class="forma-card">
+              <div class="stat-label">Sleep Quantity</div>
+              <div class="stat-value"><span id="recoverySleepDisplay">7.5</span> <span class="stat-unit">Hours</span></div>
+              <div style="margin-top: 10px; font-size: 0.75rem; color: var(--status-success);">Deep/REM Recovery Score: 88/100</div>
+            </div>
+
+            <div class="forma-card">
+              <div class="stat-label">Readiness Index</div>
+              <div class="stat-value" style="color: var(--status-success);">OPTIMAL</div>
+              <div style="margin-top: 10px; font-size: 0.75rem; color: var(--text-secondary);">Central Nervous System primed for resistance loads</div>
+            </div>
+          </div>
+
+          <div class="forma-card">
+            <h3 style="font-size: 1rem; font-weight: 600; margin-bottom: 12px;">Log Sleep & Muscle Soreness Check-In</h3>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px;">
+              <div class="form-group">
+                <label class="form-label">Sleep Duration (Hours)</label>
+                <input type="number" step="0.5" id="sleepHoursInput" class="form-control" value="8.0">
+              </div>
+              <div class="form-group">
+                <label class="form-label">Sleep Quality (1-5)</label>
+                <select id="sleepQualityInput" class="form-control">
+                  <option value="5">5 - Fully Restored</option>
+                  <option value="4">4 - Good Rest</option>
+                  <option value="3">3 - Moderate</option>
+                  <option value="2">2 - Restless</option>
+                  <option value="1">1 - Depleted</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Muscle Soreness Index</label>
+                <select id="sorenessInput" class="form-control">
+                  <option value="1">1 - None (Ready for Heavy PR)</option>
+                  <option value="2">2 - Mild Stiffness</option>
+                  <option value="3">3 - Moderate DOMS</option>
+                  <option value="4">4 - High Fatigue</option>
+                </select>
+              </div>
+            </div>
+            <button class="btn btn-silver" id="saveRecoveryLogBtn" style="margin-top: 8px;">Record Recovery Metric</button>
+          </div>
+        </section>
+
+        <!-- 8. VIEW: ACHIEVEMENTS -->
+        <section id="view-achievements" class="view-panel">
+          <div style="margin-bottom: 24px;">
+            <h1 style="font-size: 1.5rem; font-weight: 700;">Performance Badges & Milestones</h1>
+            <p style="font-size: 0.8125rem; color: var(--text-secondary);">Milestones earned strictly through verified database logging</p>
+          </div>
+
+          <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px;" id="achievementsGrid">
+            <!-- Injected by State -->
+          </div>
+        </section>
+
+        <!-- 9. VIEW: PROFILE & METABOLIC ENGINE -->
+        <section id="view-profile" class="view-panel">
+          <div style="margin-bottom: 24px;">
+            <h1 style="font-size: 1.5rem; font-weight: 700;">Athlete Profile & Mifflin-St Jeor Engine</h1>
+            <p style="font-size: 0.8125rem; color: var(--text-secondary);">Scientific metabolic basal calculations and customized macro partitioning</p>
+          </div>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px;">
+            <div class="forma-card">
+              <h3 style="font-size: 1rem; font-weight: 600; margin-bottom: 16px;">Physical Parameters</h3>
+              <form id="profileForm">
+                <div class="form-group">
+                  <label class="form-label">Full Name</label>
+                  <input type="text" id="profName" class="form-control" value="Vikram Malhotra">
+                </div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                  <div class="form-group">
+                    <label class="form-label">Age</label>
+                    <input type="number" id="profAge" class="form-control" value="28">
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label">Gender</label>
+                    <select id="profGender" class="form-control">
+                      <option value="male" selected>Male</option>
+                      <option value="female">Female</option>
+                    </select>
+                  </div>
+                </div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                  <div class="form-group">
+                    <label class="form-label">Height (cm)</label>
+                    <input type="number" id="profHeight" class="form-control" value="180">
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label">Weight (kg)</label>
+                    <input type="number" step="0.1" id="profWeight" class="form-control" value="78.5">
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Primary Objective</label>
+                  <select id="profGoal" class="form-control">
+                    <option value="muscle_gain" selected>Muscle Gain (Hypertrophy Surplus)</option>
+                    <option value="fat_loss">Fat Loss (Deficit Protocol)</option>
+                    <option value="strength">Pure Strength Peak</option>
+                    <option value="maintenance">Maintenance & Longevity</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Activity Level</label>
+                  <select id="profActivity" class="form-control">
+                    <option value="sedentary">Sedentary (Desk work)</option>
+                    <option value="lightly_active">Lightly Active (1-3 days/wk)</option>
+                    <option value="moderately_active" selected>Moderately Active (3-5 days/wk)</option>
+                    <option value="very_active">Very Active (6-7 days intense)</option>
+                  </select>
+                </div>
+                <button type="submit" class="btn btn-silver" style="width: 100%;">Recompute Energy Baselines</button>
+              </form>
+            </div>
+
+            <!-- COMPUTED METABOLIC BASES -->
+            <div class="forma-card">
+              <h3 style="font-size: 1rem; font-weight: 600; margin-bottom: 16px;">Calculated Metabolic Output</h3>
+              
+              <div style="margin-bottom: 16px;">
+                <div class="stat-label">Basal Metabolic Rate (BMR)</div>
+                <div style="font-size: 1.5rem; font-weight: 700;" id="calcBmrVal">1,780 kcal</div>
+                <div style="font-size: 0.75rem; color: var(--text-secondary); margin-top: 2px;">Energy consumed at complete rest via Mifflin-St Jeor formula</div>
+              </div>
+
+              <div style="margin-bottom: 16px;">
+                <div class="stat-label">Total Daily Energy Expenditure (TDEE)</div>
+                <div style="font-size: 1.5rem; font-weight: 700;" id="calcTdeeVal">2,759 kcal</div>
+                <div style="font-size: 0.75rem; color: var(--text-secondary); margin-top: 2px;">Estimated maintenance calories based on activity factor (1.55x)</div>
+              </div>
+
+              <div style="border-top: 1px solid var(--border-subtle); padding-top: 16px;">
+                <div class="stat-label">Calculated Daily Target Partition</div>
+                <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-top: 10px; text-align: center;">
+                  <div class="forma-card" style="padding: 12px;">
+                    <div style="font-size: 0.7rem; color: var(--text-secondary);">Calories</div>
+                    <div style="font-weight: 700; font-size: 1rem;" id="calcTargetCal">3,035</div>
+                  </div>
+                  <div class="forma-card" style="padding: 12px;">
+                    <div style="font-size: 0.7rem; color: var(--text-secondary);">Protein</div>
+                    <div style="font-weight: 700; font-size: 1rem;" id="calcTargetPro">173g</div>
+                  </div>
+                  <div class="forma-card" style="padding: 12px;">
+                    <div style="font-size: 0.7rem; color: var(--text-secondary);">Carbs</div>
+                    <div style="font-weight: 700; font-size: 1rem;" id="calcTargetCarb">410g</div>
+                  </div>
+                  <div class="forma-card" style="padding: 12px;">
+                    <div style="font-size: 0.7rem; color: var(--text-secondary);">Fats</div>
+                    <div style="font-weight: 700; font-size: 1rem;" id="calcTargetFat">78g</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+      </main>
+    </div>
+  </div>
+
+  <!-- FLOATING PERSISTENT WORKOUT DOCK -->
+  <div id="workoutFloatingDock" class="workout-dock">
+    <div>
+      <div style="font-size: 0.65rem; color: var(--text-secondary); text-transform: uppercase;">In Progress</div>
+      <div id="dockTimerDisplay" style="font-size: 1.125rem; font-weight: 700; font-variant-numeric: tabular-nums;">00:00</div>
+    </div>
+    <div style="border-left: 1px solid var(--border-medium); padding-left: 14px;">
+      <div style="font-size: 0.65rem; color: var(--text-secondary); text-transform: uppercase;">Volume</div>
+      <div id="dockVolumeDisplay" style="font-size: 1.125rem; font-weight: 700;">0 kg</div>
+    </div>
+    <div id="dockRestPill" class="rest-timer-badge">
+      <span style="font-size: 0.65rem; color: var(--status-warning); font-weight: 700;">REST</span>
+      <span id="dockRestDisplay" style="font-size: 0.875rem; font-weight: 700; color: #FFF; margin-left: 4px;">01:30</span>
+    </div>
+    <button class="btn btn-silver" id="dockResumeBtn">View</button>
+  </div>
+
+  <!-- MODAL: ADD MEAL ITEM -->
+  <div class="modal-overlay" id="addMealModal">
+    <div class="modal-sheet">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+        <h2 style="font-size: 1.125rem; font-weight: 700;">Log Food Item</h2>
+        <button class="btn btn-ghost" style="padding: 4px;" onclick="closeModal('addMealModal')"><i data-lucide="x" style="width: 16px; height: 16px;"></i></button>
+      </div>
+      <form id="addMealForm">
+        <div class="form-group">
+          <label class="form-label">Meal Slot</label>
+          <select id="modalMealSlot" class="form-control">
+            <option value="breakfast">Breakfast</option>
+            <option value="lunch" selected>Lunch</option>
+            <option value="dinner">Dinner</option>
+            <option value="snack">Snack</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Select Food Item</label>
+          <select id="modalFoodSelect" class="form-control">
+            <!-- Populated from State -->
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Portion Size (Grams / Milliliters)</label>
+          <input type="number" id="modalFoodGrams" class="form-control" value="150" min="1" max="2500">
+          <div style="font-size: 0.75rem; color: var(--text-secondary); margin-top: 4px;" id="modalFoodPreviewMath">Scaled: ~0 kcal | 0g Pro</div>
+        </div>
+        <button type="submit" class="btn btn-silver" style="width: 100%;">Commit to Daily Nutrition</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL: ADD WEIGH-IN -->
+  <div class="modal-overlay" id="addMetricModal">
+    <div class="modal-sheet">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+        <h2 style="font-size: 1.125rem; font-weight: 700;">Record Body Weigh-In</h2>
+        <button class="btn btn-ghost" style="padding: 4px;" onclick="closeModal('addMetricModal')"><i data-lucide="x" style="width: 16px; height: 16px;"></i></button>
+      </div>
+      <form id="addMetricForm">
+        <div class="form-group">
+          <label class="form-label">Body Weight (kg)</label>
+          <input type="number" step="0.1" id="modalWeightInput" class="form-control" value="78.5" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Waist Circumference (cm, optional)</label>
+          <input type="number" step="0.5" id="modalWaistInput" class="form-control" placeholder="82.0">
+        </div>
+        <button type="submit" class="btn btn-silver" style="width: 100%;">Save to Biometric History</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- REPLACEMENT: HOME WORKOUT STYLE CINEMA MODAL -->
+  <div class="modal-overlay" id="cinemaModal">
+    <div class="modal-sheet" style="max-width: 480px; padding: 20px; background: #0E0E10; border-radius: 24px;">
+      
+      <!-- Top Header -->
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px;">
+        <h2 style="font-size: 1.35rem; font-weight: 800; letter-spacing: -0.01em; color: #FFF; text-transform: uppercase;" id="modalExerciseTitle">JUMPING JACKS</h2>
+        <button class="btn btn-ghost" style="padding: 4px 10px; font-size: 0.75rem; border: none; color: #38BDF8;" onclick="loadNextExercise(1)">
+          <i data-lucide="repeat" style="width: 14px; height: 14px;"></i> Replace
+        </button>
+      </div>
+
+      <!-- Humanoid Screen Viewport -->
+      <div style="background: #F8FAFC; border-radius: 18px; overflow: hidden; position: relative; border: 1px solid rgba(255,255,255,0.08); box-shadow: inset 0 2px 10px rgba(0,0,0,0.05);">
+        <canvas id="cinemaCanvas" style="width: 100%; height: 280px; display: block;"></canvas>
+        
+        <!-- Interactive Muscle Highlight Overlay (When 'Muscle' Tab is active) -->
+        <div id="muscleMapOverlay" style="display: none; position: absolute; inset: 0; background: #0F172A; align-items: center; justify-content: center; flex-direction: column;">
+          <div style="font-size: 0.8rem; font-weight: 700; color: #38BDF8; margin-bottom: 8px;">TARGET ANATOMICAL ACTIVATION</div>
+          <div id="muscleDiagramList" style="display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; padding: 0 20px;"></div>
+        </div>
+      </div>
+
+      <!-- 3-Segment Navigation Bar: [Video] [Muscle] [How to do] -->
+      <div class="hw-tab-bar" style="display: flex; background: #1E293B; border-radius: 30px; padding: 3px; margin: 18px 0;">
+        <button class="hw-tab-btn active" id="tabBtnVideo" onclick="switchModalTab('video')">Video</button>
+        <button class="hw-tab-btn" id="tabBtnMuscle" onclick="switchModalTab('muscle')">Muscle</button>
+        <button class="hw-tab-btn" id="tabBtnHowTo" onclick="switchModalTab('howto')">How to do</button>
+      </div>
+
+      <!-- Interactive Stepper: DURATION [-] 00:20 [+] -->
+      <div style="display: flex; justify-content: space-between; align-items: center; padding: 6px 0; border-bottom: 1px solid var(--border-subtle); margin-bottom: 16px;">
+        <span style="font-size: 0.85rem; font-weight: 800; color: #38BDF8; letter-spacing: 0.05em;" id="stepperMetricLabel">DURATION</span>
+        <div style="display: flex; align-items: center; gap: 14px;">
+          <button class="btn btn-ghost stepper-btn" onclick="adjustExerciseMetric(-5)">−</button>
+          <span style="font-size: 1.5rem; font-weight: 800; color: #FFF; font-variant-numeric: tabular-nums;" id="stepperDisplay">00:30</span>
+          <button class="btn btn-ghost stepper-btn" onclick="adjustExerciseMetric(5)">+</button>
+        </div>
+      </div>
+
+      <!-- Instructions / How-To Panel -->
+      <div id="modalInstructionsSection">
+        <div style="font-size: 0.8rem; font-weight: 800; color: #38BDF8; letter-spacing: 0.05em; margin-bottom: 6px;">INSTRUCTIONS</div>
+        <p style="font-size: 0.85rem; line-height: 1.5; color: #CBD5E1; margin-bottom: 16px;" id="modalInstructionsText">
+          Start with your feet together and your arms by your sides, then jump up with your feet apart and your hands overhead.
+        </p>
+      </div>
+
+      <!-- Focus Area Muscle Badges -->
+      <div style="margin-bottom: 20px;">
+        <div style="font-size: 0.8rem; font-weight: 800; color: #38BDF8; letter-spacing: 0.05em; margin-bottom: 8px;">FOCUS AREA</div>
+        <div style="display: flex; gap: 8px; flex-wrap: wrap;" id="modalFocusAreaPills"></div>
+      </div>
+
+      <!-- Bottom Action & Navigator Bar -->
+      <div style="display: flex; align-items: center; justify-content: space-between; padding-top: 12px; border-top: 1px solid var(--border-subtle);">
+        <div style="display: flex; align-items: center; gap: 8px;">
+          <button class="btn btn-ghost" style="padding: 6px 8px;" onclick="loadNextExercise(-1)"><i data-lucide="skip-back" style="width: 16px; height: 16px;"></i></button>
+          <span style="font-size: 0.8rem; font-weight: 700; color: #94A3B8;" id="modalExerciseIndex">1/10</span>
+          <button class="btn btn-ghost" style="padding: 6px 8px;" onclick="loadNextExercise(1)"><i data-lucide="skip-forward" style="width: 16px; height: 16px;"></i></button>
+        </div>
+        <div style="display: flex; gap: 8px;">
+          <button class="btn btn-silver" style="padding: 8px 18px; border-radius: 20px;" id="modalStartWorkoutActionBtn">+ Add to Log</button>
+          <button class="btn btn-ghost" style="padding: 8px 18px; border-radius: 20px; background: #2563EB; color: #FFF; border: none;" onclick="closeCinemaModal()">CLOSE</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- CYBERPUNK HUD MODAL: ADD MEAL -->
+  <div class="hud-modal-overlay" id="hunterAddMealModal">
+    <div class="hud-modal-sheet">
+      <div class="modal-header">
+        <div class="modal-title">LOG MEAL DATA</div>
+        <button class="modal-close-btn" onclick="closeHunterModal('hunterAddMealModal')">✕</button>
+      </div>
+      <form id="hunterAddMealForm">
+        <div class="input-group">
+          <label class="input-label">MEAL SLOT</label>
+          <select class="hud-select" id="hunterMealSlotInput">
+            <option value="B">Breakfast (B)</option>
+            <option value="L" selected>Lunch (L)</option>
+            <option value="D">Dinner (D)</option>
+            <option value="S">Snack (S)</option>
+          </select>
+        </div>
+        <div class="input-group">
+          <label class="input-label">FOOD DESCRIPTION</label>
+          <input type="text" class="hud-input" id="hunterMealDescInput" placeholder="e.g. Chapathi and Paneer Butter Masala" required>
+        </div>
+        <div class="input-row">
+          <div class="input-group">
+            <label class="input-label">CALORIES (kcal)</label>
+            <input type="number" class="hud-input" id="hunterMealCalInput" placeholder="700" required>
+          </div>
+          <div class="input-group">
+            <label class="input-label">PROTEIN (g)</label>
+            <input type="number" class="hud-input" id="hunterMealProInput" placeholder="28" required>
+          </div>
+        </div>
+        <div class="modal-actions">
+          <button type="button" class="btn-chamfer btn-secondary" onclick="closeHunterModal('hunterAddMealModal')">CANCEL</button>
+          <button type="submit" class="btn-chamfer btn-cyan">RECORD MEAL</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- CYBERPUNK HUD MODAL: EDIT TARGETS -->
+  <div class="hud-modal-overlay" id="hunterEditTargetsModal">
+    <div class="hud-modal-sheet">
+      <div class="modal-header">
+        <div class="modal-title">RECONFIGURE TARGETS</div>
+        <button class="modal-close-btn" onclick="closeHunterModal('hunterEditTargetsModal')">✕</button>
+      </div>
+      <form id="hunterEditTargetsForm">
+        <div class="input-group">
+          <label class="input-label">DAILY CALORIE LIMIT (kcal)</label>
+          <input type="number" class="hud-input" id="hunterTargetCalInput" value="2000" required>
+        </div>
+        <div class="input-group">
+          <label class="input-label">DAILY PROTEIN TARGET (g)</label>
+          <input type="number" class="hud-input" id="hunterTargetProInput" value="120" required>
+        </div>
+        <div class="modal-actions">
+          <button type="button" class="btn-chamfer btn-secondary" onclick="closeHunterModal('hunterEditTargetsModal')">CANCEL</button>
+          <button type="submit" class="btn-chamfer btn-amber">UPDATE TARGETS</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- CYBERPUNK HUD MODAL: ADD MEAL PREP PROTOCOL -->
+  <div class="hud-modal-overlay" id="hunterPrepMealModal">
+    <div class="hud-modal-sheet">
+      <div class="modal-header">
+        <div class="modal-title">ADD MEAL PREP PROTOCOL</div>
+        <button class="modal-close-btn" onclick="closeHunterModal('hunterPrepMealModal')">✕</button>
+      </div>
+      <form id="hunterPrepMealForm">
+        <div class="input-row">
+          <div class="input-group">
+            <label class="input-label">ASSIGNED DAY</label>
+            <select class="hud-select" id="hunterPrepDaySelect">
+              <option value="MON">Monday (MON)</option>
+              <option value="TUE">Tuesday (TUE)</option>
+              <option value="WED">Wednesday (WED)</option>
+              <option value="THU">Thursday (THU)</option>
+              <option value="FRI">Friday (FRI)</option>
+              <option value="SAT">Saturday (SAT)</option>
+              <option value="SUN">Sunday (SUN)</option>
+            </select>
+          </div>
+          <div class="input-group">
+            <label class="input-label">MEAL SLOT</label>
+            <select class="hud-select" id="hunterPrepSlotInput">
+              <option value="B">Breakfast (B)</option>
+              <option value="L" selected>Lunch (L)</option>
+              <option value="D">Dinner (D)</option>
+              <option value="S">Snack (S)</option>
+            </select>
+          </div>
+        </div>
+        <div class="input-group">
+          <label class="input-label">FOOD DESCRIPTION</label>
+          <input type="text" class="hud-input" id="hunterPrepDescInput" placeholder="e.g. Grilled Chicken Breast & Brown Rice" required>
+        </div>
+        <div class="input-row">
+          <div class="input-group">
+            <label class="input-label">CALORIES (kcal)</label>
+            <input type="number" class="hud-input" id="hunterPrepCalInput" placeholder="650" required>
+          </div>
+          <div class="input-group">
+            <label class="input-label">PROTEIN (g)</label>
+            <input type="number" class="hud-input" id="hunterPrepProInput" placeholder="38" required>
+          </div>
+        </div>
+        <div class="modal-actions">
+          <button type="button" class="btn-chamfer btn-secondary" onclick="closeHunterModal('hunterPrepMealModal')">CANCEL</button>
+          <button type="submit" class="btn-chamfer btn-amber">ADD TO PREP PLAN</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- CYBERPUNK HUD MODAL: SUPABASE CLOUD SYNC CONFIGURATION -->
+  <div class="hud-modal-overlay" id="supabaseConfigModal">
+    <div class="hud-modal-sheet supabase-sheet">
+      <div class="modal-header">
+        <div class="supabase-badge-title">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+          SUPABASE // CLOUD DATABASE SYNC
+        </div>
+        <button class="modal-close-btn" onclick="closeSupabaseConfigModal()">✕</button>
+      </div>
+
+      <div class="supabase-info-card">
+        Real-time multi-device database synchronization, automatic offline-first caching, and permanent cloud persistence powered by Supabase PostgreSQL.
+      </div>
+
+      <div id="supabaseStatusMessage" style="font-size: 0.78rem; font-family: 'JetBrains Mono', monospace; margin-bottom: 14px; min-height: 20px;">
+        <span style="color: #A1A1AA;">Local offline mode. Enter your credentials to sync.</span>
+      </div>
+
+      <form id="supabaseConfigForm" onsubmit="saveSupabaseConfig(event)">
+        <div class="input-group">
+          <label class="input-label">SUPABASE PROJECT URL</label>
+          <input type="url" class="hud-input" id="supabaseUrlInput" placeholder="https://xxxxxxxx.supabase.co" required autocomplete="off">
+        </div>
+        <div class="input-group">
+          <label class="input-label">SUPABASE ANON / PUBLIC API KEY</label>
+          <input type="password" class="hud-input" id="supabaseKeyInput" placeholder="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..." required autocomplete="off">
+        </div>
+
+        <div class="modal-actions" style="margin-top: 15px; justify-content: space-between;">
+          <button type="button" class="btn-chamfer btn-secondary" onclick="disconnectSupabase()">DISCONNECT</button>
+          <div style="display: flex; gap: 8px;">
+            <button type="button" class="btn-chamfer btn-secondary" onclick="testSupabaseConnection()">TEST</button>
+            <button type="submit" class="btn-chamfer btn-cyan">SAVE & CONNECT</button>
+          </div>
+        </div>
+      </form>
+
+      <!-- Cloud Actions: Push / Pull -->
+      <div class="supabase-sync-actions">
+        <button type="button" class="btn-chamfer btn-secondary" onclick="pushLocalToSupabase()" title="Upload existing local browser data to Supabase">
+          ▲ PUSH LOCAL DATA
+        </button>
+        <button type="button" class="btn-chamfer btn-secondary" onclick="pullCloudToLocal()" title="Download cloud data from Supabase to local browser">
+          ▼ PULL CLOUD DATA
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- CYBERPUNK HUD MODAL: MULTI-DEVICE ATHLETE AUTHENTICATION -->
+  <div class="hud-modal-overlay" id="formaAuthModal">
+    <div class="hud-modal-sheet auth-sheet">
+      <div class="modal-header">
+        <div class="supabase-badge-title" style="color: #38BDF8;">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#38BDF8" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          ATHLETE AUTHENTICATION // CLOUD ACCOUNT
+        </div>
+        <button class="modal-close-btn" onclick="closeAuthModal()">✕</button>
+      </div>
+
+      <!-- Auth Tab Navigation -->
+      <div class="auth-tab-bar">
+        <button type="button" class="auth-tab-btn active" data-tab="signin" onclick="switchAuthTab('signin')">SIGN IN</button>
+        <button type="button" class="auth-tab-btn" data-tab="signup" onclick="switchAuthTab('signup')">CREATE ACCOUNT</button>
+        <button type="button" class="auth-tab-btn" data-tab="forgot" onclick="switchAuthTab('forgot')">RECOVER</button>
+      </div>
+
+      <div id="authStatusMessage" style="font-size: 0.78rem; font-family: 'JetBrains Mono', monospace; margin-bottom: 14px; min-height: 20px;"></div>
+
+      <!-- 1. SIGN IN TAB -->
+      <form id="authTab-signin" class="auth-tab-content" onsubmit="handleSignInSubmit(event)">
+        <div class="input-group">
+          <label class="input-label">ATHLETE EMAIL</label>
+          <input type="email" class="hud-input" id="authSignInEmail" placeholder="athlete@example.com" required autocomplete="email">
+        </div>
+        <div class="input-group">
+          <label class="input-label">PASSWORD</label>
+          <input type="password" class="hud-input" id="authSignInPassword" placeholder="••••••••••••" required autocomplete="current-password">
+        </div>
+        <div class="modal-actions" style="margin-top: 20px;">
+          <button type="button" class="btn-chamfer btn-secondary" onclick="switchAuthTab('forgot')">Forgot Password?</button>
+          <button type="submit" class="btn-chamfer btn-cyan">SIGN IN & SYNC</button>
+        </div>
+      </form>
+
+      <!-- 2. CREATE ACCOUNT TAB -->
+      <form id="authTab-signup" class="auth-tab-content" style="display: none;" onsubmit="handleSignUpSubmit(event)">
+        <div class="input-group">
+          <label class="input-label">FULL NAME / ATHLETE CALLSIGN</label>
+          <input type="text" class="hud-input" id="authSignUpName" placeholder="e.g. Sung Jin-Woo" required autocomplete="name">
+        </div>
+        <div class="input-group">
+          <label class="input-label">EMAIL ADDRESS</label>
+          <input type="email" class="hud-input" id="authSignUpEmail" placeholder="athlete@example.com" required autocomplete="email">
+        </div>
+        <div class="input-group">
+          <label class="input-label">CREATE PASSWORD (MIN 6 CHARACTERS)</label>
+          <input type="password" class="hud-input" id="authSignUpPassword" placeholder="••••••••••••" required minlength="6" autocomplete="new-password">
+        </div>
+        <div class="modal-actions" style="margin-top: 20px;">
+          <button type="button" class="btn-chamfer btn-secondary" onclick="switchAuthTab('signin')">Already have account?</button>
+          <button type="submit" class="btn-chamfer btn-amber">REGISTER ACCOUNT</button>
+        </div>
+      </form>
+
+      <!-- 3. FORGOT PASSWORD TAB -->
+      <form id="authTab-forgot" class="auth-tab-content" style="display: none;" onsubmit="handleResetPasswordSubmit(event)">
+        <div class="input-group">
+          <label class="input-label">REGISTERED EMAIL ADDRESS</label>
+          <input type="email" class="hud-input" id="authResetEmail" placeholder="athlete@example.com" required autocomplete="email">
+        </div>
+        <div class="modal-actions" style="margin-top: 20px;">
+          <button type="button" class="btn-chamfer btn-secondary" onclick="switchAuthTab('signin')">Back to Sign In</button>
+          <button type="submit" class="btn-chamfer btn-secondary">SEND RESET LINK</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ==========================================================================
+       FORMA CORE JAVASCRIPT STATE ENGINE & REACTIVE LOGIC
+       ========================================================================== -->
+  <!-- FORMA Modular Application Logic -->
+  <script src="js/state.js"></script>
+  <script src="js/workout.js"></script>
+  <script src="js/cinema.js"></script>
+  <script src="js/charts.js"></script>
+  <script src="js/main.js?v=5"></script>
+  <script src="js/hunter-meal.js?v=5"></script>
+  <script src="js/supabase.js?v=5"></script>
+  <script src="js/auth.js?v=5"></script>
+  <script src="js/sync-engine.js?v=5"></script>
+</body>
+</html>

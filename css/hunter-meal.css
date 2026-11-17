@@ -1,0 +1,1070 @@
+/* ==========================================================================
+   HUNTER SYSTEM / SOLO LEVELING TACTICAL MEAL TRACKER HUD
+   Scoped to Meal Tracker View (#view-nutrition) & HUD Modals
+   ========================================================================== */
+
+#view-nutrition {
+  --bg-core: #060709;
+  --bg-card: #131418;
+  --bg-card-inner: #15161b;
+  --border-card: #2e2f38;
+  --border-subtle: #24252c;
+  
+  /* Sci-Fi Accent Palette */
+  --amber-primary: #f59e0b;
+  --amber-bright: #ffa000;
+  --amber-glow: rgba(245, 158, 11, 0.25);
+  
+  --purple-primary: #818cf8;
+  --purple-track: #1b1c30;
+  
+  --cyan-primary: #00d2ff;
+  --cyan-glow: rgba(0, 210, 255, 0.35);
+  --cyan-border: #0284c7;
+
+  --emerald-primary: #00e599;
+  --emerald-glow: rgba(0, 229, 153, 0.25);
+
+  --mauve-text: #a88490;
+  --mauve-muted: #725962;
+  --text-primary: #ededed;
+  --text-bright: #ffffff;
+  
+  /* Chamfer Size */
+  --cut: 16px;
+  --btn-cut: 9px;
+
+  font-family: 'JetBrains Mono', 'Chakra Petch', monospace;
+  display: none;
+  flex-direction: column;
+  gap: 20px;
+}
+
+#view-nutrition.active {
+  display: flex !important;
+}
+
+/* Tactical HUD Top Header Bar */
+.hunter-view-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.hunter-title-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.hunter-badge-pill {
+  font-family: 'Chakra Petch', sans-serif;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  padding: 3px 10px;
+  border-radius: 4px;
+  background: rgba(0, 229, 153, 0.1);
+  border: 1px solid var(--emerald-primary);
+  color: var(--emerald-primary);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.hunter-badge-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--emerald-primary);
+  box-shadow: 0 0 6px var(--emerald-primary);
+}
+
+/* Date Navigator */
+.date-navigator {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 120px;
+  position: relative;
+  margin-bottom: 8px;
+  padding: 10px 0;
+}
+
+.nav-chamfer-btn {
+  width: 38px;
+  height: 38px;
+  background: #111215;
+  border: 1px solid #2e2f36;
+  color: #777;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.nav-chamfer-btn.prev {
+  clip-path: polygon(0 0, calc(100% - 9px) 0, 100% 9px, 100% 100%, 9px 100%, 0 calc(100% - 9px));
+}
+.nav-chamfer-btn.next {
+  clip-path: polygon(9px 0, 100% 0, 100% calc(100% - 9px), calc(100% - 9px) 100%, 0 100%, 0 9px);
+}
+.nav-chamfer-btn svg { width: 18px; height: 18px; }
+.nav-chamfer-btn:hover { color: #FFF; border-color: #555; }
+
+.date-center {
+  text-align: center;
+}
+
+.date-label-badge {
+  font-family: 'Orbitron', 'Chakra Petch', sans-serif;
+  font-size: 1.15rem;
+  font-weight: 900;
+  letter-spacing: 0.22em;
+  color: var(--amber-primary);
+  text-shadow: 0 0 12px var(--amber-glow);
+}
+
+.date-subtext {
+  font-size: 0.8rem;
+  color: var(--mauve-text);
+  letter-spacing: 0.08em;
+  margin-top: 3px;
+}
+
+/* ==========================================================================
+   CHAMFERED SCI-FI CARDS (45-degree angled corners)
+   ========================================================================== */
+.hunter-card {
+  position: relative;
+  background: var(--border-card);
+  clip-path: polygon(
+    0 0,
+    calc(100% - var(--cut)) 0,
+    100% var(--cut),
+    100% 100%,
+    var(--cut) 100%,
+    0 calc(100% - var(--cut))
+  );
+  padding: 1px; /* 1px border stroke effect */
+  margin-bottom: 20px;
+}
+
+.card-inner {
+  background: var(--bg-card);
+  clip-path: polygon(
+    0 0,
+    calc(100% - var(--cut)) 0,
+    100% var(--cut),
+    100% 100%,
+    var(--cut) 100%,
+    0 calc(100% - var(--cut))
+  );
+  padding: 22px 26px 24px 26px;
+}
+
+/* Card Header */
+.card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.card-title {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.title-square {
+  width: 9px;
+  height: 9px;
+  background: #FFF;
+  box-shadow: 0 0 8px rgba(255, 255, 255, 0.9);
+  display: inline-block;
+}
+
+.title-text {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.95rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  color: #E2E8F0;
+  text-transform: capitalize;
+}
+
+.link-btn {
+  background: transparent;
+  border: none;
+  font-size: 0.75rem;
+  color: var(--mauve-text);
+  text-decoration: underline;
+  cursor: pointer;
+  font-family: inherit;
+  letter-spacing: 0.05em;
+}
+.link-btn:hover { color: #FFF; }
+
+.card-actions {
+  display: flex;
+  gap: 10px;
+}
+
+/* Chamfered Tactical Buttons */
+.btn-chamfer {
+  font-family: 'Chakra Petch', sans-serif;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  padding: 7px 18px;
+  border: 1px solid #333;
+  background: #17181c;
+  color: #CCC;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  clip-path: polygon(
+    0 0,
+    calc(100% - var(--btn-cut)) 0,
+    100% var(--btn-cut),
+    100% 100%,
+    var(--btn-cut) 100%,
+    0 calc(100% - var(--btn-cut))
+  );
+  transition: all 0.15s ease;
+}
+
+.btn-secondary {
+  border-color: #3b3c44;
+  color: #D1D5DB;
+}
+.btn-secondary:hover {
+  background: #222329;
+  border-color: #555;
+  color: #FFF;
+}
+
+.btn-cyan {
+  border-color: var(--cyan-border);
+  color: var(--cyan-primary);
+  background: rgba(0, 210, 255, 0.05);
+}
+.btn-cyan:hover {
+  background: rgba(0, 210, 255, 0.15);
+  box-shadow: 0 0 10px var(--cyan-glow);
+}
+
+.btn-amber {
+  border-color: var(--amber-primary);
+  color: var(--amber-primary);
+  background: rgba(245, 158, 11, 0.05);
+}
+.btn-amber:hover {
+  background: rgba(245, 158, 11, 0.15);
+  box-shadow: 0 0 10px var(--amber-glow);
+}
+
+.btn-sm {
+  padding: 4px 12px;
+  font-size: 0.9rem;
+}
+
+/* ==========================================================================
+   METRIC ROWS: CALORIES & PROTEIN
+   ========================================================================== */
+.metric-row {
+  margin-bottom: 16px;
+}
+
+.metric-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 7px;
+  font-size: 0.8125rem;
+}
+
+.metric-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+}
+
+.metric-icon { font-size: 0.95rem; }
+
+.calories-label { color: var(--mauve-text); }
+.calories-val {
+  color: var(--amber-primary);
+  font-weight: 700;
+  letter-spacing: 0.05em;
+}
+
+.protein-label { color: var(--mauve-text); }
+.protein-val {
+  color: var(--purple-primary);
+  font-weight: 700;
+  letter-spacing: 0.05em;
+}
+
+.progress-track {
+  height: 7px;
+  background: #0f1013;
+  border: 1px solid #232328;
+  overflow: hidden;
+  position: relative;
+}
+
+.calories-track { border-color: rgba(245, 158, 11, 0.25); }
+.calories-fill {
+  height: 100%;
+  background: var(--amber-primary);
+  box-shadow: 0 0 8px var(--amber-glow);
+  transition: width 0.4s ease;
+}
+
+.protein-track { border-color: rgba(129, 140, 248, 0.25); }
+.protein-fill {
+  height: 100%;
+  background: var(--purple-primary);
+  box-shadow: 0 0 8px rgba(129, 140, 248, 0.4);
+  transition: width 0.4s ease;
+}
+
+/* ==========================================================================
+   WATER SECTION & BOTTLES
+   ========================================================================== */
+.water-controller-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 24px;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.water-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.water-icon {
+  color: var(--cyan-primary);
+  font-size: 1rem;
+}
+
+.water-title {
+  color: var(--mauve-text);
+  font-size: 0.8125rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+}
+
+.water-badge-toggle {
+  background: transparent;
+  border: 1px solid var(--cyan-border);
+  color: var(--cyan-primary);
+  padding: 4px 10px;
+  font-family: inherit;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  cursor: pointer;
+  clip-path: polygon(
+    0 0,
+    calc(100% - 6px) 0,
+    100% 6px,
+    100% 100%,
+    6px 100%,
+    0 calc(100% - 6px)
+  );
+}
+
+.water-controls-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.water-counter-display {
+  font-family: 'Orbitron', 'Chakra Petch', sans-serif;
+  display: flex;
+  align-items: baseline;
+  gap: 4px;
+}
+
+.water-digit {
+  color: var(--cyan-primary);
+  font-size: 1.35rem;
+  font-weight: 900;
+  letter-spacing: 0.04em;
+  text-shadow: 0 0 8px var(--cyan-glow);
+}
+
+.water-total {
+  color: var(--mauve-text);
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+/* Bottles Grid */
+.bottles-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+  margin-bottom: 12px;
+}
+
+.bottle-card {
+  background: #111216;
+  border: 1px solid #28282f;
+  border-radius: 6px;
+  padding: 16px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.bottle-card:hover {
+  border-color: #444;
+}
+
+.bottle-card.filled {
+  background: rgba(0, 210, 255, 0.06);
+  border-color: var(--cyan-primary);
+  box-shadow: inset 0 0 14px rgba(0, 210, 255, 0.15);
+}
+
+.bottle-card.filled .bottle-name {
+  color: var(--cyan-primary);
+  text-shadow: 0 0 8px var(--cyan-glow);
+}
+
+.bottle-name {
+  color: var(--mauve-text);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  margin-bottom: 4px;
+}
+
+.bottle-sub {
+  color: #665259;
+  font-size: 0.72rem;
+  letter-spacing: 0.06em;
+}
+
+.bottle-card.filled .bottle-sub {
+  color: #A0ECFF;
+}
+
+.water-legend-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.72rem;
+  color: #846872;
+  letter-spacing: 0.05em;
+  margin-top: 4px;
+}
+
+/* ==========================================================================
+   CARD 2: LOG MEAL & MEAL LIST
+   ========================================================================== */
+.empty-state-text {
+  font-style: italic;
+  font-size: 0.8125rem;
+  color: #846872;
+  letter-spacing: 0.04em;
+  padding: 8px 0;
+}
+
+.meals-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.meal-entry-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #101115;
+  border: 1px solid #272830;
+  padding: 10px 14px;
+  border-radius: 4px;
+}
+
+.meal-entry-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.85rem;
+}
+
+.meal-entry-right {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  font-size: 0.8rem;
+}
+
+.meal-del-btn {
+  background: transparent;
+  border: none;
+  color: #88626b;
+  cursor: pointer;
+  font-size: 1rem;
+}
+.meal-del-btn:hover { color: #FF453A; }
+
+/* ==========================================================================
+   CARD 3: 7-DAY OVERVIEW
+   ========================================================================== */
+.seven-days-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 12px;
+}
+
+.day-slot {
+  background: #101114;
+  border: 1px solid #23242a;
+  border-radius: 6px;
+  padding: 14px 6px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.day-slot.active-today {
+  border: 1px solid var(--amber-primary);
+  background: rgba(245, 158, 11, 0.04);
+  box-shadow: 0 0 10px rgba(245, 158, 11, 0.15);
+}
+
+.day-slot.active-today .day-name {
+  color: var(--amber-primary);
+  font-weight: 700;
+}
+
+.day-name {
+  font-size: 0.72rem;
+  color: var(--mauve-text);
+  letter-spacing: 0.08em;
+}
+
+.day-dial {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  border: 1.5px solid #2a2b33;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.dial-dot {
+  width: 4px;
+  height: 4px;
+  background: var(--amber-primary);
+  border-radius: 50%;
+  position: absolute;
+  top: 4px;
+}
+
+.dial-num {
+  font-size: 0.75rem;
+  color: #6b6e7a;
+  font-weight: 700;
+  margin-top: 4px;
+}
+
+.day-foot {
+  font-size: 0.75rem;
+  color: #725962;
+}
+
+/* ==========================================================================
+   CARD 4: MEAL PREP PLAN
+   ========================================================================== */
+.prep-plan-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.prep-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 24px;
+  font-size: 0.8125rem;
+}
+
+.prep-day {
+  color: var(--mauve-text);
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  width: 36px;
+  margin-top: 1px;
+}
+
+.prep-entries {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 18px;
+  color: #D1D5DB;
+}
+
+.prep-item {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 5px;
+}
+
+.tag {
+  font-weight: 700;
+}
+.tag-b { color: var(--amber-primary); }
+.tag-l { color: #10B981; }
+.tag-d { color: var(--purple-primary); }
+.tag-s { color: #38BDF8; }
+
+.macro-note {
+  color: var(--mauve-muted);
+  font-size: 0.75rem;
+}
+
+/* Prep Plan Checklist & Interactive Checkbox */
+.prep-checklist-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: #0f1014;
+  border: 1px solid #23242c;
+  padding: 8px 14px;
+  border-radius: 6px;
+  transition: all 0.2s ease;
+  margin-bottom: 6px;
+}
+
+.prep-checklist-row:hover {
+  border-color: #3b3d4a;
+}
+
+.prep-checklist-row.prep-item-completed {
+  background: rgba(0, 210, 255, 0.04);
+  border-color: rgba(0, 210, 255, 0.3);
+}
+
+.prep-checklist-row.prep-item-completed .prep-text {
+  color: #94A3B8;
+  text-decoration: line-through;
+}
+
+.hunter-prep-checkbox {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 18px;
+  height: 18px;
+  background: #090a0d;
+  border: 1.5px solid #384152;
+  border-radius: 4px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+  position: relative;
+}
+
+.hunter-prep-checkbox:hover {
+  border-color: var(--cyan-primary);
+  box-shadow: 0 0 8px var(--cyan-glow);
+}
+
+.hunter-prep-checkbox:checked {
+  background: var(--cyan-primary);
+  border-color: var(--cyan-primary);
+  box-shadow: 0 0 10px var(--cyan-glow);
+}
+
+.hunter-prep-checkbox:checked::after {
+  content: "✓";
+  font-size: 11px;
+  font-weight: 900;
+  color: #060709;
+}
+
+.prep-logged-badge {
+  font-size: 0.65rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  padding: 2px 6px;
+  border-radius: 3px;
+  background: rgba(0, 229, 153, 0.15);
+  border: 1px solid rgba(0, 229, 153, 0.4);
+  color: var(--emerald-primary);
+  text-transform: uppercase;
+}
+
+.prep-del-btn {
+  background: transparent;
+  border: none;
+  color: #6d545d;
+  cursor: pointer;
+  font-size: 0.85rem;
+  padding: 2px 4px;
+  margin-left: auto;
+}
+.prep-del-btn:hover {
+  color: #FF453A;
+}
+
+.meal-prep-origin-badge {
+  font-size: 0.65rem;
+  font-weight: 800;
+  color: var(--cyan-primary);
+  background: rgba(0, 210, 255, 0.1);
+  border: 1px solid rgba(0, 210, 255, 0.3);
+  padding: 1px 5px;
+  border-radius: 3px;
+  letter-spacing: 0.05em;
+}
+
+/* ==========================================================================
+   HUNTER HUD MODALS
+   ========================================================================== */
+.hud-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(8px);
+  z-index: 9999;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+}
+.hud-modal-overlay.active { display: flex !important; }
+
+.hud-modal-sheet {
+  background: #111216;
+  border: 1px solid #33343d;
+  width: 100%;
+  max-width: 460px;
+  padding: 24px;
+  clip-path: polygon(
+    0 0,
+    calc(100% - 16px) 0,
+    100% 16px,
+    100% 100%,
+    16px 100%,
+    0 calc(100% - 16px)
+  );
+  box-shadow: 0 10px 40px rgba(0,0,0,0.9);
+  font-family: 'JetBrains Mono', 'Chakra Petch', monospace;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  border-bottom: 1px solid #23242b;
+  padding-bottom: 12px;
+}
+
+.modal-title {
+  font-family: 'Chakra Petch', sans-serif;
+  font-size: 0.95rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  color: #FFF;
+}
+
+.modal-close-btn {
+  background: transparent;
+  border: none;
+  color: #888;
+  cursor: pointer;
+  font-size: 1.1rem;
+}
+.modal-close-btn:hover { color: #FFF; }
+
+.input-group {
+  margin-bottom: 14px;
+}
+
+.input-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.input-label {
+  display: block;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: var(--mauve-text);
+  margin-bottom: 5px;
+}
+
+.hud-input, .hud-select {
+  width: 100%;
+  background: #090a0d;
+  border: 1px solid #2a2b33;
+  color: #FFF;
+  padding: 8px 12px;
+  font-family: inherit;
+  font-size: 0.85rem;
+  outline: none;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+.hud-input:focus, .hud-select:focus {
+  border-color: var(--cyan-primary);
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+  .date-navigator { gap: 40px; }
+  .bottles-grid { grid-template-columns: 1fr; }
+  .seven-days-grid { grid-template-columns: repeat(4, 1fr); }
+}
+
+/* ==========================================================================
+   HUNTER SYSTEM / SUPABASE CLOUD STATUS PILL & HUD CONFIG MODAL
+   ========================================================================== */
+.hunter-sync-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 14px;
+  border-radius: 6px;
+  background: rgba(18, 20, 26, 0.9);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  color: #A1A1AA;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  user-select: none;
+  outline: none;
+}
+
+.hunter-sync-badge:hover {
+  background: rgba(28, 30, 38, 0.95);
+  border-color: rgba(255, 255, 255, 0.25);
+  color: #FFF;
+}
+
+.hunter-sync-badge.synced {
+  background: rgba(16, 185, 129, 0.08);
+  border-color: rgba(16, 185, 129, 0.4);
+  color: #10B981;
+}
+
+.hunter-sync-badge.synced:hover {
+  background: rgba(16, 185, 129, 0.16);
+  border-color: rgba(16, 185, 129, 0.7);
+  box-shadow: 0 0 14px rgba(16, 185, 129, 0.25);
+}
+
+.hunter-sync-badge.offline {
+  background: rgba(24, 24, 27, 0.7);
+  border-color: rgba(113, 113, 122, 0.3);
+  color: #8E8E93;
+}
+
+.hunter-sync-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #71717A;
+  display: inline-block;
+}
+
+.hunter-sync-badge.synced .hunter-sync-dot {
+  background: #10B981;
+  box-shadow: 0 0 8px #10B981;
+}
+
+.sys-icon-btn-ghost {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 6px;
+  background: rgba(18, 20, 26, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #94A3B8;
+  cursor: pointer;
+  transition: all 0.18s ease;
+}
+.sys-icon-btn-ghost:hover {
+  background: rgba(30, 34, 44, 0.9);
+  border-color: rgba(255, 255, 255, 0.25);
+  color: #FFF;
+}
+
+/* Supabase Modal Specific Enhancements */
+.supabase-sheet {
+  max-width: 540px !important;
+  border-color: rgba(16, 185, 129, 0.3) !important;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8), 0 0 30px rgba(16, 185, 129, 0.15) !important;
+}
+
+.supabase-badge-title {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: #10B981;
+  font-family: 'Chakra Petch', sans-serif;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  font-size: 0.95rem;
+}
+
+.supabase-info-card {
+  background: rgba(16, 185, 129, 0.05);
+  border: 1px solid rgba(16, 185, 129, 0.2);
+  border-radius: 6px;
+  padding: 12px 14px;
+  font-size: 0.75rem;
+  color: #A1A1AA;
+  line-height: 1.5;
+  margin-bottom: 16px;
+}
+
+.supabase-sync-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-top: 14px;
+  padding-top: 14px;
+  border-top: 1px dashed rgba(255, 255, 255, 0.08);
+}
+
+/* ==========================================================================
+   MULTI-DEVICE AUTHENTICATION & SESSION UI COMPONENTS
+   ========================================================================== */
+.auth-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 14px;
+  border-radius: 6px;
+  background: rgba(18, 20, 26, 0.9);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  font-family: 'JetBrains Mono', monospace;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  user-select: none;
+}
+.auth-pill:hover {
+  background: rgba(30, 34, 44, 0.95);
+  border-color: rgba(255, 255, 255, 0.25);
+}
+.auth-pill.authenticated {
+  background: rgba(16, 185, 129, 0.08);
+  border-color: rgba(16, 185, 129, 0.35);
+}
+.auth-pill.unauthenticated {
+  background: rgba(245, 158, 11, 0.08);
+  border-color: rgba(245, 158, 11, 0.35);
+}
+.auth-logout-chip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.1);
+  color: #94A3B8;
+  font-size: 0.65rem;
+  margin-left: 4px;
+  transition: all 0.15s ease;
+}
+.auth-logout-chip:hover {
+  background: #EF4444;
+  color: #FFF;
+}
+
+.queue-counter {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1px 6px;
+  border-radius: 10px;
+  background: #F59E0B;
+  color: #000;
+  font-size: 0.65rem;
+  font-weight: 800;
+  margin-left: 4px;
+}
+
+.auth-tab-bar {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 20px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  padding-bottom: 8px;
+}
+
+.auth-tab-btn {
+  background: transparent;
+  border: none;
+  font-family: 'Chakra Petch', sans-serif;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  color: #71717A;
+  padding: 6px 14px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.18s ease;
+}
+.auth-tab-btn:hover {
+  color: #FFF;
+  background: rgba(255, 255, 255, 0.05);
+}
+.auth-tab-btn.active {
+  color: #10B981;
+  background: rgba(16, 185, 129, 0.1);
+  border: 1px solid rgba(16, 185, 129, 0.3);
+}
+
+.auth-sheet {
+  max-width: 480px !important;
+  border-color: rgba(56, 189, 248, 0.3) !important;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.85), 0 0 30px rgba(56, 189, 248, 0.15) !important;
+}
+
+
+
