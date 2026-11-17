@@ -111,13 +111,21 @@
           `;
         });
 
+        const localizedEx = window.formaI18n ? window.formaI18n.getExercise(exItem) : exItem;
+        const exName = localizedEx ? localizedEx.name : exItem.name;
+        const setLabel = window.t ? window.t('wt_set', 'Set') : 'Set';
+        const kgLabel = window.t ? window.t('wt_kg', 'kg') : 'kg';
+        const repsLabel = window.t ? window.t('wt_reps', 'Reps') : 'Reps';
+        const statusLabel = window.t ? window.t('wt_action', 'Status') : 'Status';
+        const addSetBtnLabel = window.t ? `+ ${setLabel}` : '+ Add Set';
+
         card.innerHTML = `
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
-            <h3 style="font-size: 1rem; font-weight: 700;">${exItem.name}</h3>
-            <button class="btn btn-ghost" style="padding: 4px 10px; font-size: 0.75rem;" onclick="addSetToExercise(${exIdx})">+ Add Set</button>
+            <h3 style="font-size: 1rem; font-weight: 700;">${exName}</h3>
+            <button class="btn btn-ghost" style="padding: 4px 10px; font-size: 0.75rem;" onclick="addSetToExercise(${exIdx})">${addSetBtnLabel}</button>
           </div>
           <div style="display: grid; grid-template-columns: 40px 1fr 1fr 60px 40px; gap: 10px; margin-bottom: 6px; font-size: 0.65rem; color: var(--text-secondary); text-transform: uppercase; padding: 0 12px;">
-            <span>Set</span><span style="text-align: center;">kg</span><span style="text-align: center;">Reps</span><span>Status</span><span></span>
+            <span>${setLabel}</span><span style="text-align: center;">${kgLabel}</span><span style="text-align: center;">${repsLabel}</span><span>${statusLabel}</span><span></span>
           </div>
           ${setsRows}
         `;
@@ -374,19 +382,23 @@
       const container = document.getElementById('programsContainer');
       container.innerHTML = '';
 
-      state.programs.forEach(prog => {
+      state.programs.forEach(rawProg => {
+        const prog = window.formaI18n ? window.formaI18n.getProgram(rawProg) : rawProg;
+        const daysLabel = window.t ? window.t('prog_days', 'days/week') : 'days/week';
+        const startBtnLabel = window.t ? window.t('prog_start', 'Enroll & Start') : 'Enroll & Start';
+
         const card = document.createElement('div');
         card.className = 'forma-card';
         card.innerHTML = `
           <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px;">
             <span style="font-size: 0.7rem; font-weight: 700; color: var(--silver-accent); letter-spacing: 0.05em; text-transform: uppercase;">${prog.focus}</span>
-            <span style="font-size: 0.75rem; color: var(--text-secondary);">${prog.days} Days / Wk</span>
+            <span style="font-size: 0.75rem; color: var(--text-secondary);">${prog.days} ${daysLabel}</span>
           </div>
           <h3 style="font-size: 1.125rem; font-weight: 700; margin-bottom: 8px;">${prog.title}</h3>
           <p style="font-size: 0.8125rem; color: var(--text-secondary); margin-bottom: 16px; min-height: 40px;">${prog.desc}</p>
           <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--border-subtle); padding-top: 14px;">
             <span style="font-size: 0.75rem; color: var(--text-tertiary);">${prog.level}</span>
-            <button class="btn btn-silver" onclick="enrollInProgram(${prog.id})">Enroll & Start</button>
+            <button class="btn btn-silver" onclick="enrollInProgram(${prog.id})">${startBtnLabel}</button>
           </div>
         `;
         container.appendChild(card);

@@ -364,7 +364,8 @@
       const state = store.get();
       if (!state.exercises || state.exercises.length === 0) return;
       currentLibraryExerciseIndex = (idx + state.exercises.length) % state.exercises.length;
-      const ex = state.exercises[currentLibraryExerciseIndex];
+      const rawEx = state.exercises[currentLibraryExerciseIndex];
+      const ex = window.formaI18n ? window.formaI18n.getExercise(rawEx) : rawEx;
 
       const indexBadge = document.getElementById('libPreviewIndexBadge');
       if (indexBadge) indexBadge.innerText = `${currentLibraryExerciseIndex + 1}/${state.exercises.length}`;
@@ -528,7 +529,8 @@
       const state = store.get();
       if (!state.exercises || state.exercises.length === 0) return;
       currentCinemaIndex = (idx + state.exercises.length) % state.exercises.length;
-      const ex = state.exercises[currentCinemaIndex];
+      const rawEx = state.exercises[currentCinemaIndex];
+      const ex = window.formaI18n ? window.formaI18n.getExercise(rawEx) : rawEx;
 
       const titleEl = document.getElementById('modalExerciseTitle');
       if (titleEl) titleEl.innerText = ex.name.toUpperCase();
@@ -600,11 +602,12 @@
         return matchesCat && matchesSearch;
       });
 
-      filtered.forEach(ex => {
-        const isCurrent = state.exercises[currentLibraryExerciseIndex]?.id === ex.id;
+      filtered.forEach(rawEx => {
+        const ex = window.formaI18n ? window.formaI18n.getExercise(rawEx) : rawEx;
+        const isCurrent = state.exercises[currentLibraryExerciseIndex]?.id === rawEx.id;
         const card = document.createElement('div');
         card.className = `forma-card library-exercise-card ${isCurrent ? 'active-preview-card' : ''}`;
-        card.dataset.exerciseId = ex.id;
+        card.dataset.exerciseId = rawEx.id;
         card.style.cursor = 'pointer';
         card.innerHTML = `
           <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 6px;">

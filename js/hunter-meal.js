@@ -356,9 +356,10 @@ class HunterTracker {
     // 5. Render Meals for Current Day
     if (this.mealsContainer) {
       if (activeMeals.length === 0) {
+        const emptyMsg = window.t ? window.t('meal_empty', 'No meals logged for this day.') : 'No meals logged for this day.';
         this.mealsContainer.innerHTML = `
           <div class="empty-state-text">
-            No meals logged for this day (${curDate}). Tap + Add or check items from the Meal Prep Plan below.
+            ${emptyMsg}
           </div>
         `;
       } else {

@@ -1,6 +1,8 @@
     /* ==========================================================================
        FORMA DESIGN SYSTEM: LUXURY METALLIC DARK AESTHETIC
        ========================================================================== */
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Noto+Sans+Kannada:wght@300;400;500;600;700;800&display=swap');
+
     :root {
       --bg-primary: #090909;
       --bg-secondary: #111111;
@@ -644,4 +646,86 @@
       .content-area {
         padding: 16px;
       }
+    }
+
+    /* ==========================================================================
+       FORMA KANNADA (ಕನ್ನಡ) & MULTILINGUAL REGIONAL TYPOGRAPHY
+       ========================================================================== */
+    html[lang="kn"], body.lang-kn {
+      font-family: 'Noto Sans Kannada', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
+      line-height: 1.6;
+      letter-spacing: 0.01em;
+    }
+
+    .lang-kn h1, .lang-kn h2, .lang-kn h3, .lang-kn h4, .lang-kn .brand-logo, .lang-kn .stat-value {
+      font-family: 'Noto Sans Kannada', sans-serif !important;
+      letter-spacing: 0;
+      line-height: 1.45;
+    }
+
+    /* Language Selector Component */
+    .lang-dropdown-wrapper {
+      position: relative;
+      display: inline-block;
+    }
+
+    .lang-pill-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      color: #FFF;
+      padding: 6px 12px;
+      border-radius: 20px;
+      cursor: pointer;
+      font-size: 0.78rem;
+      font-weight: 600;
+      transition: all 0.2s ease;
+    }
+
+    .lang-pill-btn:hover {
+      background: rgba(255, 255, 255, 0.12);
+      border-color: rgba(255, 255, 255, 0.3);
+    }
+
+    .lang-dropdown-menu {
+      position: absolute;
+      top: calc(100% + 8px);
+      right: 0;
+      min-width: 180px;
+      padding: 8px;
+      background: #18191E;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 12px;
+      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.7);
+      z-index: 1000;
+    }
+
+    .lang-option-btn {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+      padding: 8px 12px;
+      border: none;
+      background: transparent;
+      color: #CBD5E1;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 0.8125rem;
+      font-weight: 600;
+      text-align: left;
+      transition: all 0.15s ease;
+    }
+
+    .lang-option-btn:hover {
+      background: rgba(255, 255, 255, 0.08);
+      color: #FFF;
+    }
+
+    .lang-option-btn.active {
+      background: rgba(255, 255, 255, 0.16);
+      color: #FFF;
+      font-weight: 800;
     }

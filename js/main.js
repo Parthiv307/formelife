@@ -25,6 +25,7 @@
       if (viewId === 'progress') renderProgressPRTable();
       if (viewId === 'achievements') renderAchievements();
       if (viewId === 'profile') populateProfileInputs();
+      if (window.formaI18n) window.formaI18n.translatePage();
 
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }

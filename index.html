@@ -13,7 +13,7 @@
   <!-- Sci-fi / Tactical Monospace Fonts for Hunter System -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Orbitron:wght@600;800;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Noto+Sans+Kannada:wght@400;500;600;700;800&family=Orbitron:wght@600;800;900&display=swap" rel="stylesheet">
 
   <!-- FORMA Core Modular Stylesheet & Hunter Meal HUD -->
   <link rel=stylesheet href="css/styles.css">
@@ -37,39 +37,39 @@
       <nav class="sidebar-nav">
         <button class="nav-btn active" data-view="dashboard">
           <i data-lucide="layout-dashboard" style="width: 18px; height: 18px;"></i>
-          <span class="nav-label">Dashboard</span>
+          <span class="nav-label" data-i18n="nav_dashboard">Dashboard</span>
         </button>
         <button class="nav-btn" data-view="workout">
           <i data-lucide="dumbbell" style="width: 18px; height: 18px;"></i>
-          <span class="nav-label">Workout Tracker</span>
+          <span class="nav-label" data-i18n="nav_workout">Workout Tracker</span>
         </button>
         <button class="nav-btn" data-view="programs">
           <i data-lucide="layers" style="width: 18px; height: 18px;"></i>
-          <span class="nav-label">Training Programs</span>
+          <span class="nav-label" data-i18n="nav_programs">Training Programs</span>
         </button>
         <button class="nav-btn" data-view="library">
           <i data-lucide="book-open" style="width: 18px; height: 18px;"></i>
-          <span class="nav-label">Exercise Library</span>
+          <span class="nav-label" data-i18n="nav_library">Exercise Library</span>
         </button>
         <button class="nav-btn" data-view="nutrition">
           <i data-lucide="utensils" style="width: 18px; height: 18px;"></i>
-          <span class="nav-label">Meal Tracker</span>
+          <span class="nav-label" data-i18n="nav_nutrition">Meal Tracker</span>
         </button>
         <button class="nav-btn" data-view="progress">
           <i data-lucide="line-chart" style="width: 18px; height: 18px;"></i>
-          <span class="nav-label">Progress & Metrics</span>
+          <span class="nav-label" data-i18n="nav_progress">Progress & Metrics</span>
         </button>
         <button class="nav-btn" data-view="recovery">
           <i data-lucide="heart-pulse" style="width: 18px; height: 18px;"></i>
-          <span class="nav-label">Recovery & Sleep</span>
+          <span class="nav-label" data-i18n="nav_recovery">Recovery & Sleep</span>
         </button>
         <button class="nav-btn" data-view="achievements">
           <i data-lucide="trophy" style="width: 18px; height: 18px;"></i>
-          <span class="nav-label">Achievements</span>
+          <span class="nav-label" data-i18n="nav_achievements">Achievements</span>
         </button>
         <button class="nav-btn" data-view="profile">
           <i data-lucide="user" style="width: 18px; height: 18px;"></i>
-          <span class="nav-label">Profile & Targets</span>
+          <span class="nav-label" data-i18n="nav_profile">Profile & Targets</span>
         </button>
       </nav>
 
@@ -93,25 +93,28 @@
           <span id="systemClockDisplay" style="font-variant-numeric: tabular-nums; color: var(--text-primary);">--:--:--</span>
         </div>
         <div style="display: flex; gap: 10px; align-items: center;">
+          <!-- Quick Multi-Language Selector Dropdown -->
+          <div id="topLanguageSelectorContainer"></div>
+
           <!-- Multi-Device Athlete Account Pill -->
           <button id="headerAuthBtn" class="auth-pill unauthenticated" onclick="openAuthModal('signin')" title="Athlete Account & Multi-Device Sync">
             <span style="width: 7px; height: 7px; border-radius: 50%; background: #F59E0B; display: inline-block;"></span>
-            <span style="font-size: 0.72rem; color: #D1D5DB; font-weight: 700; letter-spacing: 0.08em;">SIGN IN / REGISTER</span>
+            <span style="font-size: 0.72rem; color: #D1D5DB; font-weight: 700; letter-spacing: 0.08em;" data-i18n="auth_signin_register">SIGN IN / REGISTER</span>
           </button>
 
           <!-- Supabase Cloud Sync Status Badge -->
           <button id="supabaseHeaderStatus" class="hunter-sync-badge offline" onclick="openSupabaseConfigModal()" title="Supabase Cloud Connection">
             <span class="hunter-sync-dot"></span>
-            <span class="sync-text">LOCAL OFFLINE</span>
+            <span class="sync-text" data-i18n="db_local_offline">LOCAL OFFLINE</span>
           </button>
           <button class="sys-icon-btn-ghost" onclick="openSupabaseConfigModal()" title="Supabase Database Settings">
             <i data-lucide="settings" style="width: 15px; height: 15px;"></i>
           </button>
           <button class="btn btn-ghost" id="quickAddMealBtn">
-            <i data-lucide="plus" style="width: 14px; height: 14px;"></i> Log Food
+            <i data-lucide="plus" style="width: 14px; height: 14px;"></i> <span data-i18n="btn_log_food">Log Food</span>
           </button>
           <button class="btn btn-silver" id="topStartWorkoutBtn">
-            <i data-lucide="play" style="width: 14px; height: 14px;"></i> Start Session
+            <i data-lucide="play" style="width: 14px; height: 14px;"></i> <span data-i18n="btn_start_session">Start Session</span>
           </button>
         </div>
       </header>
@@ -813,6 +816,23 @@
                 </div>
               </div>
             </div>
+
+            <!-- LANGUAGE & REGIONAL LOCALIZATION SECTION -->
+            <div class="forma-card" style="grid-column: 1 / -1; margin-top: 16px;">
+              <h3 style="font-size: 1rem; font-weight: 600; margin-bottom: 8px;" data-i18n="lang_section_title">Language & Regional Localization</h3>
+              <p style="font-size: 0.8125rem; color: var(--text-secondary); margin-bottom: 16px;" data-i18n="lang_section_sub">Choose your primary language. Switches instantly across dashboard, workouts, and nutrition without page reload.</p>
+              <div class="form-group" style="max-width: 320px; margin-bottom: 0;">
+                <label class="form-label" data-i18n="lang_select_label">Active Platform Language</label>
+                <select id="profLanguageSelect" class="form-control" onchange="window.setLanguage(this.value)">
+                  <option value="en">English (English)</option>
+                  <option value="kn">ಕನ್ನಡ (Kannada)</option>
+                  <option value="hi">हिन्दी (Hindi)</option>
+                  <option value="ta">தமிழ் (Tamil)</option>
+                  <option value="te">తెలుగు (Telugu)</option>
+                  <option value="ml">മലയാളം (Malayalam)</option>
+                </select>
+              </div>
+            </div>
           </div>
         </section>
 
@@ -1202,6 +1222,7 @@
        ========================================================================== -->
   <!-- FORMA Modular Application Logic -->
   <script src="js/state.js"></script>
+  <script src="js/i18n.js"></script>
   <script src="js/workout.js"></script>
   <script src="js/cinema.js"></script>
   <script src="js/charts.js"></script>

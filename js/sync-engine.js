@@ -227,6 +227,9 @@ class FormaSyncEngine {
   handleIncomingProfileChange(payload) {
     if (!payload.new) return;
     const { new: newRow } = payload;
+    if (newRow.language && window.formaI18n && window.formaI18n.currentLang !== newRow.language) {
+      window.formaI18n.setLanguage(newRow.language, false);
+    }
     if (window.hunterTracker) {
       window.hunterTracker.state.targets.calories = newRow.calories_target || 2000;
       window.hunterTracker.state.targets.protein = newRow.protein_target || 120;
