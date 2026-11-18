@@ -94,7 +94,7 @@ class FormaAuthService {
         password: password,
         options: {
           data: {
-            full_name: fullName ? fullName.trim() : 'Hunter Athlete'
+            full_name: fullName ? fullName.trim() : 'FORMA Athlete'
           },
           emailRedirectTo: window.location.origin
         }

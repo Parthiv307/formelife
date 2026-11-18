@@ -1,175 +1,226 @@
-# FORMA — Tactical Fitness Engine & Biometric HUD
-### *Advanced Resistance Tracking, Hunter System Fuel HUD & Multilingual Regional Localization*
+# FORMA — Elite Fitness & Performance Engine
+### *Advanced Resistance Tracking, Biomechanical Kinematics & Native Multilingual Regional System*
 
-[![Supabase Realtime](https://img.shields.io/badge/Supabase-Realtime_Cloud_Sync-3ECF8E?style=for-the-badge&logo=supabase&logoColor=white)](https://supabase.com)
+[![Platform Status](https://img.shields.io/badge/Platform-FORMA_v2.0-blue?style=for-the-badge)](https://github.com/Parthiv307/formelife)
 [![Language Support](https://img.shields.io/badge/Regional_Languages-Kannada_(ಕನ್ನಡ)_Primary-FF7138?style=for-the-badge)](https://github.com/Parthiv307/formelife)
 [![Architecture](https://img.shields.io/badge/Architecture-Offline--First_Vanilla_JS-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)](https://github.com/Parthiv307/formelife)
-[![License](https://img.shields.io/badge/License-MIT-blue?style=for-the-badge)](LICENSE)
+[![Database](https://img.shields.io/badge/Cloud_Sync-Supabase_Realtime-3ECF8E?style=for-the-badge&logo=supabase&logoColor=white)](https://supabase.com)
+[![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
 
 ---
 
-## 🌟 Executive Overview
+## 🌟 Overview
 
-**FORMA** is an elite, high-performance fitness platform and tactical biometric HUD designed for serious athletes, bodybuilders, and fitness enthusiasts. Combining a sleek dark tactical aesthetic with cutting-edge resistance tracking, 60 FPS humanoid exercise biomechanics, gamified RPG progression (Hunter System), and a high-fidelity **Kannada (ಕನ್ನಡ)** multilingual translation engine, FORMA delivers an immersive sports science experience across desktop, tablet, and mobile.
+**FORMA** is an elite sports performance and biometric tracking platform built for athletes, strength trainers, and fitness enthusiasts. Engineered with a focused dark metallic aesthetic, FORMA combines real-time volume load tracking, 60 FPS humanoid biomechanical exercise kinematics, periodized training splits, precision macronutrient and hydration tracking, and a native **Kannada (ಕನ್ನಡ)** multilingual localization system.
 
-Built with an **offline-first modular architecture**, FORMA communicates directly with a **Supabase PostgreSQL** cloud backend via real-time WebSocket subscriptions, ensuring instant cross-device state synchronization with zero server overhead.
+Built strictly on modern web standards with an **offline-first modular architecture**, FORMA runs with zero framework overhead, synchronizing seamlessly with a Supabase PostgreSQL backend for encrypted, real-time multi-device continuity.
 
 ---
 
 <p align="center">
-  <img src="docs/images/forma_dashboard_overview.png" alt="FORMA Platform Executive Dashboard" width="100%" style="border-radius: 12px; box-shadow: 0 16px 40px rgba(0,0,0,0.8);" />
+  <img src="docs/images/forma_dashboard.png" alt="FORMA Platform Executive Dashboard" width="100%" style="border-radius: 10px; box-shadow: 0 16px 40px rgba(0,0,0,0.8);" />
   <br>
-  <em>Figure 1: FORMA Executive Dashboard displaying Live Biometric Streams, Consistency Streaks, KPI Metrics, Volume Trajectory, and the Sidebar Language Switcher.</em>
+  <em>Figure 1: FORMA Executive Dashboard — Live Biometric Stream, Consistency Streaks, Daily Caloric & Protein Progress, Weekly Volume Load Trajectory, and Sidebar Language Switcher.</em>
 </p>
 
 ---
 
-## 🌐 Feature 1: Kannada (ಕನ್ನಡ) & Multilingual Regional Localization
+## 🌐 1. Native Kannada (ಕನ್ನಡ) & Multilingual Regional Localization
 
-FORMA features a state-of-the-art multilingual engine with **Kannada (ಕನ್ನಡ)** as its primary regional language, alongside full support for English, Hindi (हिन्दी), Tamil (தமிழ்), Telugu (తెలుగు), and Malayalam (മലയാളം).
+FORMA provides a full-featured, zero-latency regional language system with **Kannada (ಕನ್ನಡ)** as its primary regional language, alongside English (default), Hindi (हिन्दी), Tamil (தமிழ்), Telugu (తెలుగు), and Malayalam (മലയാളം).
 
 <p align="center">
-  <img src="docs/images/forma_kannada_active.png" alt="FORMA Kannada Regional Localization" width="100%" style="border-radius: 12px; box-shadow: 0 16px 40px rgba(0,0,0,0.8);" />
+  <img src="docs/images/forma_kannada.png" alt="FORMA Kannada Localization Interface" width="100%" style="border-radius: 10px; box-shadow: 0 16px 40px rgba(0,0,0,0.8);" />
   <br>
-  <em>Figure 2: FORMA completely localized into fluent, natural Kannada (ಡ್ಯಾಶ್‌ಬೋರ್ಡ್, ವ್ಯಾಯಾಮ ಟ್ರ್ಯಾಕರ್, ತರಬೇತಿ ತೂಕದ ಪ್ರಗತಿ, ಪೋಷಕಾಂಶಗಳ ಪ್ರಮಾಣ, etc.).</em>
+  <em>Figure 2: Complete natural Kannada (ಕನ್ನಡ) localization — ಡ್ಯಾಶ್‌ಬೋರ್ಡ್, ವ್ಯಾಯಾಮ ಟ್ರ್ಯಾಕರ್, ತರಬೇತಿ ತೂಕದ ಪ್ರಗತಿ (ಕೆ.ಜಿ), ಪೋಷಕಾಂಶಗಳ ಪ್ರಮಾಣ, and live telemetry updates.</em>
 </p>
 
-### Key Highlights:
-- **Natural, Modern Kannada Terminology:** Avoids rigid literal translations. All exercise names, biomechanical instructions, macronutrient classifications, and metric labels use fluent, context-appropriate Kannada fitness terminology.
-- **Instant Live Switching:** Change languages instantaneously from the permanent **Sidebar Language Selector** or the **Top Header Pill** without requiring a page refresh.
-- **Typography & Font Optimization:** Integrates Google's `Noto Sans Kannada` Unicode font with optimized line-heights, letter-spacing, and conjunct ligature rendering (`.lang-kn`) to ensure pristine typography across devices.
-- **Cross-Device Cloud Sync:** The selected language preference is automatically synchronized to the athlete's cloud profile on Supabase (`profiles.language`) and cached locally in `localStorage`.
-- **Translated AI Telemetry Engine:** Generates real-time dietary and training recommendations in natural Kannada (`generateAiRecommendation()`).
+### Localization Architecture:
+- **Fluent Regional Terminology:** Built using modern, natural Kannada fitness terminology rather than literal machine translation, maintaining clear understanding for exercises, sets, calories, and training metrics.
+- **Unmissable Dual-Location Selector:** Change languages instantly at any time via the prominent **Sidebar Language Box** or the **Top Header Quick Pill** without page reloads.
+- **Optimized Typography:** Powered by Google's `Noto Sans Kannada` Unicode font with custom line-height and letter-spacing rules (`.lang-kn`) to guarantee proper vowel signs, conjuncts, and zero character overlap.
+- **Persistent Cloud & Local Sync:** Selected language persists across browser sessions via `localStorage` and synchronizes to authenticated athlete profiles on Supabase (`profiles.language`).
+- **Contextual AI Recommendations:** Features an automated fitness guidance generator producing natural Kannada training tips and nutritional insights (`generateAiRecommendation()`).
 
 #### Terminology Glossary Sample:
-| English Concept | Fluent Kannada (ಕನ್ನಡ) | Context & Usage |
+| English Concept | Kannada (ಕನ್ನಡ) | Context in FORMA |
 | :--- | :--- | :--- |
-| **Dashboard** | **ಡ್ಯಾಶ್‌ಬೋರ್ಡ್** | Primary biometric overview |
-| **Workout Tracker** | **ವ್ಯಾಯಾಮ ಟ್ರ್ಯಾಕರ್** | Active set & repetition logger |
-| **Consistency Streak** | **ಸ್ಥಿರತೆಯ ದಿನಗಳು** | Consecutive training adherence |
-| **Daily Calories** | **ದೈನಂದಿನ ಕ್ಯಾಲೊರಿಗಳು** | Active metabolic energy balance |
-| **Protein Intake** | **ಪ್ರೋಟೀನ್ ಸೇವನೆ** | Muscular hypertrophy allocation |
+| **Dashboard** | **ಡ್ಯಾಶ್‌ಬೋರ್ಡ್** | Main biometric and activity hub |
+| **Workout Tracker** | **ವ್ಯಾಯಾಮ ಟ್ರ್ಯಾಕರ್** | Active workout and set recording |
+| **Training Programs** | **ತರಬೇತಿ ಕಾರ್ಯಕ್ರಮಗಳು** | Double-progression program catalog |
+| **Exercise Library** | **ವ್ಯಾಯಾಮ ಲೈಬ್ರರಿ** | Biomechanical kinematic library |
+| **Meal Tracker** | **ಆಹಾರ ಟ್ರ್ಯಾಕರ್** | Daily nutritional and hydration log |
+| **Consistency Streak** | **ಸ್ಥಿರತೆಯ ದಿನಗಳು** | Consecutive training adherence target |
+| **Daily Calories** | **ದೈನಂದಿನ ಕ್ಯಾಲೊರಿಗಳು** | Daily metabolic energy intake |
+| **Protein Intake** | **ಪ್ರೋಟೀನ್ ಸೇವನೆ** | Muscle repair and hypertrophy partition |
 | **Weekly Volume** | **ವಾರದ ಒಟ್ಟು ತೂಕ (ವಾಲ್ಯೂಮ್)** | Cumulative external tonnage lifted |
-| **Hydration Level** | **ನೀರಿನ ಮಟ್ಟ (ಜಲಸಂಚಯನ)** | Real-time hydration monitoring |
-| **Volume Trajectory** | **ತರಬೇತಿ ತೂಕದ ಪ್ರಗತಿ** | Multi-session workload curve |
-| **Macronutrients** | **ಪೋಷಕಾಂಶಗಳ ಪ್ರಮಾಣ (ಮ್ಯಾಕ್ರೋ)** | Carbs, protein & fat partition |
+| **Hydration Level** | **ನೀರಿನ ಮಟ್ಟ (ಜಲಸಂಚಯನ)** | Real-time water intake vs. 3L goal |
+| **Volume Trajectory** | **ತರಬೇತಿ ತೂಕದ ಪ್ರಗತಿ** | Multi-session progressive overload curve |
 
 ---
 
-## ⚔️ Feature 2: Hunter System — Tactical Fuel & Meal Prep HUD
+## 🏋️ 2. Active Workout Session & Resistance Tracker
 
-Inspired by gamified RPG rank progression (Solo Leveling), the **Hunter System** provides a tactical HUD for precision nutritional periodization and meal execution.
+The workout tracking engine is tailored for progressive overload, precise set logging, and neuromuscular recovery timing.
 
 <p align="center">
-  <img src="docs/images/forma_hunter_prep.png" alt="Hunter System Meal Prep HUD" width="100%" style="border-radius: 12px; box-shadow: 0 16px 40px rgba(0,0,0,0.8);" />
+  <img src="docs/images/forma_workout_tracker.png" alt="FORMA Active Workout Session" width="100%" style="border-radius: 10px; box-shadow: 0 16px 40px rgba(0,0,0,0.8);" />
   <br>
-  <em>Figure 3: Hunter System Meal Prep Protocol with day-by-day itemization, macro calculation, and one-tap logging.</em>
+  <em>Figure 3: Active Workout Session logger with real-time session timers, external volume calculation, and set completion trackers.</em>
 </p>
 
-### Capabilities:
-- **Weekly Meal Prep Protocol:** Plan nutritional intake across Monday through Sunday with customized slots (Breakfast, Lunch, Dinner, Pre-Workout, Post-Workout).
-- **One-Tap Consumption Logging:** Check off prepared meals to log calories, protein, carbs, and fats directly into the daily fuel metrics.
-- **Live Water Bottle Sync:** Rapid-log hydration increments (+250ml, +500ml) with visual capacity progress towards the 3.0L intracellular target.
-- **Metabolic Baselines:** Integrated Mifflin-St Jeor BMR calculator and TDEE activity factor multipliers for hypertrophy surplus, deficit, or maintenance protocols.
+### Tracking Capabilities:
+- **Brzycki One-Rep Max (1RM) Formula:** Evaluates theoretical max strength on every logged set in real-time ($$\text{1RM} = \frac{\text{Weight}}{1.0278 - (0.0278 \times \text{Reps})}$$).
+- **Session Telemetry:** Tracks elapsed workout duration, total cumulative session volume (kg), and completed sets count.
+- **Rest Interval Countdown:** Visual and audio timer keeps rest periods disciplined between heavy working sets.
+- **Persistent Dock:** Floating workout dock allows navigating through other tabs while keeping the active training session accessible.
 
 ---
 
-## 🎖️ Feature 3: Hunter License, RPG Stats & Rank Cards
+## 📚 3. Periodized Training Programs Catalog
+
+FORMA comes pre-configured with 10 scientific, periodized training programs structured for specific physical adaptations.
 
 <p align="center">
-  <img src="docs/images/hunter_system_license.png" alt="Hunter License & RPG Stats Card" width="100%" style="border-radius: 12px; box-shadow: 0 16px 40px rgba(0,0,0,0.8);" />
+  <img src="docs/images/forma_programs.png" alt="FORMA Periodized Training Programs" width="100%" style="border-radius: 10px; box-shadow: 0 16px 40px rgba(0,0,0,0.8);" />
   <br>
-  <em>Figure 4: Hunter Association Official License with dynamic Rank, Level, XP progression, and physical attributes.</em>
+  <em>Figure 4: Program catalog featuring Push/Pull/Legs, Upper/Lower, Full Body, Calisthenics, Bro Split, and Strength 5x5.</em>
 </p>
 
-### Progression Mechanics:
-- **Rank Classifications:** Advance from Rank E to National Level Hunter based on consistent workout completions and tonnage PRs.
-- **Attribute Allocation:** Monitor Strength (STR), Agility (AGI), Vitality (VIT), and Senses (SEN) calculated from progressive overload history.
-- **Exportable Hunter Identification:** Download high-resolution Hunter License ID cards to celebrate milestones.
+### Included Training Splits:
+1. **Push Pull Legs (PPL):** 6 days/week mechanical tension protocol with dedicated push, pull, and leg sessions.
+2. **Upper / Lower Split:** 4 days/week balanced frequency targeting compound lifts and recovery.
+3. **Beginner Full Body:** 3 days/week foundational neuromuscular barbell development.
+4. **Home Calisthenics Mastery:** 4 days/week progressive bodyweight levers, handstand work, and pulling power.
+5. **Maximum Hypertrophy (Bro Split):** 5 days/week isolated target volume dedicated to individual muscle groups.
+6. **Strength Protocol 5x5:** 3 days/week high-intensity focus centered on Squat, Bench Press, and Deadlift.
+7. **Fat Loss & Conditioning:** 4 days/week compound complexes coupled with timed intervals.
+8. **Athletic Performance:** 4 days/week triphasic training enhancing sprint deceleration and vertical power.
+9. **Mobility & Structural Longevity:** 3 days/week end-range joint control, thoracic rotation, and spine health.
 
 ---
 
-## 🏋️ Feature 4: Resistance Tracker & Biomechanical Library
+## 🏃 4. Biomechanical Exercise Directory & 60 FPS Kinematics
 
-- **Brzycki One-Rep Max (1RM) Computation:** Real-time formula calculates theoretical maximums on every logged set.
-- **Audio Rest Timer:** Automatic auditory and visual cues count down recovery intervals between sets.
-- **60 FPS Kinematics Engine:** Interactive exercise demonstration canvas showcasing humanoid skeletal movement, form angles, and primary/secondary muscle activation heatmaps.
-- **Double-Progression Programs:** 10 pre-loaded periodized training splits including Push/Pull/Legs, Upper/Lower, 5/3/1 Strength, and German Volume Training.
-
----
-
-## ☁️ Feature 5: Supabase Cloud & Multi-Device Realtime Engine
-
-FORMA utilizes **Supabase (PostgreSQL + Realtime WebSockets)** for persistent, encrypted, multi-device synchronization.
+An interactive anatomy and movement directory that visualizes proper movement pathways and muscle recruitment.
 
 <p align="center">
-  <img src="docs/images/supabase_cloud_architecture.png" alt="Supabase Realtime Cloud Schema" width="100%" style="border-radius: 12px; box-shadow: 0 16px 40px rgba(0,0,0,0.8);" />
+  <img src="docs/images/forma_exercise_library.png" alt="FORMA Exercise Library and Kinematics" width="100%" style="border-radius: 10px; box-shadow: 0 16px 40px rgba(0,0,0,0.8);" />
   <br>
-  <em>Figure 5: Supabase Cloud Database schema with Row-Level Security (RLS) and real-time replication channels.</em>
+  <em>Figure 5: 60 FPS Humanoid kinematic demonstration canvas with prime mover activation meters and step-by-step form guides.</em>
 </p>
 
-### Resilient Data Flow:
+### Biomechanics Features:
+- **60 FPS Canvas Kinematics Engine:** Live humanoid animation demonstrates movement pacing, joint angles, and skeletal alignment.
+- **Target Muscle Activation Heatmaps:** Real-time percentage meters indicating primary movers and secondary synergists (e.g., Calves 95%, Quadriceps 85%, Deltoids 80%).
+- **Movement Filtering:** Instant filtering across muscle groups (Chest, Back, Quadriceps, Hamstrings, Shoulders, Arms, Core, Cardio).
+- **One-Click Session Injection:** Add any library exercise directly into your active workout session with custom set configurations.
+
+---
+
+## 🥗 5. Meal & Nutrition Tracker
+
+A dedicated nutritional module designed for precision energy balance and hydration management.
+
+<p align="center">
+  <img src="docs/images/forma_nutrition.png" alt="FORMA Meal and Nutrition Tracker" width="100%" style="border-radius: 10px; box-shadow: 0 16px 40px rgba(0,0,0,0.8);" />
+  <br>
+  <em>Figure 6: Daily nutrition tracking HUD with calorie and protein progress bars, 3L water bottle logger, and meal timeline.</em>
+</p>
+
+### Nutrition Engine Features:
+- **Daily Macronutrient Progress:** Visual progress meters for daily Caloric intake (kcal) and Protein intake (g) against personalized targets.
+- **Hydration Monitoring:** Visual water bottle interface tracking 1.0L bottle increments towards the daily 3.0L intracellular target.
+- **Weekly Meal Prep System:** Plan and schedule nutrition for every day of the week with instant meal logging.
+- **Custom Meal Logging:** Add custom food items, calorie counts, and protein grams with real-time macro balance recalculation.
+
+---
+
+## 👤 6. Athlete Profile & Mifflin-St Jeor Metabolic Engine
+
+The scientific foundation for calculating exact personalized nutritional targets and training volume baselines.
+
+<p align="center">
+  <img src="docs/images/forma_profile.png" alt="FORMA Athlete Profile and Metabolic Engine" width="100%" style="border-radius: 10px; box-shadow: 0 16px 40px rgba(0,0,0,0.8);" />
+  <br>
+  <em>Figure 7: Physical biometric parameters, calculated BMR, TDEE, macronutrient target partitions, and regional language preferences.</em>
+</p>
+
+### Scientific Calculations:
+- **Basal Metabolic Rate (BMR):** Accurate energy expenditure at rest calculated via the Mifflin-St Jeor formula:
+  $$\text{BMR} = 10 \times \text{Weight (kg)} + 6.25 \times \text{Height (cm)} - 5 \times \text{Age (y)} + s$$
+  *(where $s = +5$ for males, $-161$ for females).*
+- **Total Daily Energy Expenditure (TDEE):** Multiplied by activity factor (Sedentary, Light, Moderate, Very Active) to establish maintenance calories.
+- **Target Partitioning:** Computes custom target splits for Calories, Protein, Carbohydrates, and Fats based on the athlete's primary objective (Muscle Gain, Fat Loss, Pure Strength, or Maintenance).
+
+---
+
+## ⚡ 7. Technical Architecture & Data Synchronization
+
+FORMA is engineered as an **offline-first single-page application** with resilient cloud persistence.
+
 ```
-┌─────────────────────────────────┐
-│       Athlete Client UI         │
-│  (Desktop, Tablet, or Mobile)   │
-└───────────────┬─────────────────┘
-                │
-     ┌──────────┴──────────┐
-     ▼                     ▼
-┌──────────────┐     ┌──────────────────────┐
-│ localStorage │     │ FormaSyncEngine (Tx) │
-│ State Cache  │     │ Offline Queue Buffer │
-└──────────────┘     └──────────┬───────────┘
-                                │
-                    (Automatic Flush on Reconnect)
-                                │
-                                ▼
-               ┌─────────────────────────────────┐
-               │     Supabase Cloud Services     │
-               │  • JWT Athlete Authentication   │
-               │  • PostgreSQL with Row Security │
-               │  • Realtime WebSocket Channels  │
-               └─────────────────────────────────┘
+┌────────────────────────────────────────────────────────┐
+│                      FORMA Web App                     │
+│  (Desktop Browser, Tablet, or Mobile Viewport)         │
+└──────────────────────────┬─────────────────────────────┘
+                           │
+             ┌─────────────┴─────────────┐
+             ▼                           ▼
+┌─────────────────────────┐   ┌──────────────────────────┐
+│   localStorage Cache    │   │  FormaSyncEngine (Tx)    │
+│  • Active Language      │   │  • Offline Tx Queue      │
+│  • Workout & Meal State │   │  • Auto Retry Mechanism  │
+└─────────────────────────┘   └──────────┬───────────────┘
+                                         │
+                               (WebSocket Realtime Push)
+                                         │
+                                         ▼
+                     ┌───────────────────────────────────┐
+                     │          Supabase Cloud           │
+                     │  • PostgreSQL with Row Security   │
+                     │  • JWT Athlete Authentication     │
+                     │  • Instant Multi-Device Sync      │
+                     └───────────────────────────────────┘
 ```
 
-- **Row-Level Security (RLS):** Strict security policies ensure athletes access exclusively their own personal records, meals, and workout logs.
-- **Offline Transaction Queue:** If internet connectivity drops, workout sets and meal logs queue locally and sync automatically upon reconnection.
-- **Cross-Device Broadcasting:** Log a meal on your smartphone; your desktop dashboard updates instantaneously without a refresh.
+- **Zero Heavy Frameworks:** Pure Vanilla JavaScript (ES2022+), CSS3 custom properties, and Semantic HTML5 for instantaneous load times (< 100ms) and minimal battery drain.
+- **Offline Transaction Queue:** If network drops during training, sets and meal logs queue in memory and automatically flush to Supabase when reconnected.
+- **Row-Level Security (RLS):** Supabase PostgreSQL policies strictly isolate athlete data based on `auth.uid()`.
 
 ---
 
-## 📁 Repository Structure
+## 📁 Source Code Structure
 
 ```
 forma_platform/
 ├── css/
-│   ├── styles.css           # Luxury metallic dark design system & Kannada typography
-│   └── hunter-meal.css      # Hunter System tactical sci-fi meal & HUD styling
+│   ├── styles.css           # FORMA core design system & Kannada typography overrides
+│   └── hunter-meal.css      # Nutrition HUD layout & bottle hydration styling
 ├── js/
-│   ├── i18n.js              # Kannada (ಕನ್ನಡ) & multilingual localization engine
-│   ├── state.js             # Core reactive state store & defaults
-│   ├── main.js              # Application controller & view switcher
-│   ├── workout.js           # Workout session logger, timers & 1RM calculator
-│   ├── cinema.js            # 60 FPS biomechanics exercise library & canvas
-│   ├── hunter-meal.js       # Hunter System meal planner & hydration HUD
-│   ├── charts.js            # Chart.js volume load curves & macro doughnut
-│   ├── auth.js              # Supabase JWT authentication & session handlers
-│   ├── supabase.js          # Supabase client manager & configuration
-│   └── sync-engine.js       # Real-time WebSocket sync & offline transaction queue
+│   ├── i18n.js              # Kannada (ಕನ್ನಡ) & multilingual translation engine
+│   ├── state.js             # Central reactive state store & exercise database
+│   ├── main.js              # Application lifecycle, navigation & view controller
+│   ├── workout.js           # Workout logging, Brzycki 1RM calculator & audio timers
+│   ├── cinema.js            # 60 FPS humanoid biomechanical canvas & exercise library
+│   ├── hunter-meal.js       # Daily meal log & water bottle hydration manager
+│   ├── charts.js            # Volume load curve & macro doughnut visualizations
+│   ├── auth.js              # Supabase authentication & athlete profile manager
+│   ├── supabase.js          # Supabase client connector & settings modal
+│   └── sync-engine.js       # Real-time WebSocket synchronization & offline queue
 ├── docs/
-│   └── images/              # High-resolution screenshots for documentation
+│   └── images/              # High-resolution application screenshots
 ├── html/
-│   └── index.html           # Sub-route HTML mirror (synchronized)
+│   └── index.html           # Synchronized sub-route mirror
 ├── index.html               # Main application entry point
-├── supabase_schema.sql      # Full PostgreSQL database schema, RLS policies & triggers
-├── netlify.toml             # Netlify deployment and security header configuration
+├── supabase_schema.sql      # Database schema, table structures, RLS policies & triggers
+├── netlify.toml             # Netlify deployment configuration & security headers
 └── README.md                # Comprehensive documentation
 ```
 
 ---
 
-## 🚀 Quick Start Guide
+## 🚀 Getting Started
 
 ### 1. Clone the Repository
 ```bash
@@ -177,49 +228,35 @@ git clone https://github.com/Parthiv307/formelife.git
 cd formelife
 ```
 
-### 2. Launch Local Development Server
-Because FORMA uses native ES modules and Web Workers, serve it through any local web server:
+### 2. Run Locally
+Because FORMA uses native ES modules, serve it through any static file server:
 
-**Using Python:**
 ```bash
+# Using Python
 python3 -m http.server 8080
-```
-Then navigate to **`http://localhost:8080`** in your browser.
 
-**Using Node.js:**
-```bash
+# Or using Node
 npx serve . -p 8080
 ```
+Open **`http://localhost:8080`** in your browser.
 
-### 3. Connect Supabase (Optional for Cloud Sync)
-1. Create a project at [supabase.com](https://supabase.com).
-2. Run the provided SQL migration script in your Supabase SQL Editor:
+### 3. Connect Supabase (Optional)
+1. Set up a free project on [supabase.com](https://supabase.com).
+2. Execute the schema script in your Supabase SQL Editor:
    ```bash
    cat supabase_schema.sql
    ```
-3. Open FORMA in your browser, click the **Settings ⚙️** icon in the top header, and paste your **Supabase Project URL** and **Anon Key**.
-4. Register or Sign In with your athlete account. All data will instantly synchronize to your private cloud database.
-
----
-
-## 🛠️ Technology Stack
-
-- **Frontend Core:** Vanilla JavaScript (ES2022+), Semantic HTML5, Modular CSS3.
-- **Typography:** `Noto Sans Kannada`, `Inter`, `Chakra Petch`, `JetBrains Mono`, `Orbitron`.
-- **Data Visualization:** Chart.js 4.4, Canvas API, Custom SVG Ring Gauges.
-- **Icons:** Lucide Icons.
-- **Backend & Cloud:** Supabase (PostgreSQL 15), Supabase Realtime (WebSockets), Supabase GoTrue Auth.
-- **Hosting & Edge:** Netlify / GitHub Pages.
+3. In FORMA, click the **Settings ⚙️** icon in the top header, enter your Supabase URL and Anon Key, and click save. Your workout history, meal logs, and language preferences will now synchronize to your cloud account in real-time.
 
 ---
 
 ## 📜 License
 
-Distributed under the **MIT License**. See `LICENSE` for more information.
+Distributed under the **MIT License**. See `LICENSE` for details.
 
 ---
 
 <p align="center">
-  <b>FORMA Platform</b> — Designed for Peak Physical Performance.<br>
-  Built with ❤️ for the global & Kannada-speaking fitness community.
+  <b>FORMA Performance Pro</b> — Precision Sports Science & Performance Tracking.<br>
+  Built with ❤️ for global & regional fitness communities.
 </p>
