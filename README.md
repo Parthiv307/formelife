@@ -1,11 +1,14 @@
 # FORMA — Elite Fitness & Performance Engine
 ### *Advanced Resistance Tracking, Biomechanical Kinematics & Native Multilingual Regional System*
 
-[![Platform Status](https://img.shields.io/badge/Platform-FORMA_v2.0-blue?style=for-the-badge)](https://github.com/Parthiv307/formelife)
-[![Language Support](https://img.shields.io/badge/Regional_Languages-Kannada_(ಕನ್ನಡ)_Primary-FF7138?style=for-the-badge)](https://github.com/Parthiv307/formelife)
+[![Live Website](https://img.shields.io/badge/Live_Website-formelife.netlify.app-00C7B7?style=for-the-badge&logo=netlify&logoColor=white)](https://formelife.netlify.app/)
+[![Platform Status](https://img.shields.io/badge/Platform-FORMA_v2.0-blue?style=for-the-badge)](https://formelife.netlify.app/)
+[![Language Support](https://img.shields.io/badge/Regional_Languages-Kannada_(ಕನ್ನಡ)_Primary-FF7138?style=for-the-badge)](https://formelife.netlify.app/)
 [![Architecture](https://img.shields.io/badge/Architecture-Offline--First_Vanilla_JS-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)](https://github.com/Parthiv307/formelife)
 [![Database](https://img.shields.io/badge/Cloud_Sync-Supabase_Realtime-3ECF8E?style=for-the-badge&logo=supabase&logoColor=white)](https://supabase.com)
 [![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
+
+> 🚀 **Live Production Deployment:** [https://formelife.netlify.app/](https://formelife.netlify.app/)
 
 ---
 
@@ -14,6 +17,8 @@
 **FORMA** is an elite sports performance and biometric tracking platform built for athletes, strength trainers, and fitness enthusiasts. Engineered with a focused dark metallic aesthetic, FORMA combines real-time volume load tracking, 60 FPS humanoid biomechanical exercise kinematics, periodized training splits, precision macronutrient and hydration tracking, and a native **Kannada (ಕನ್ನಡ)** multilingual localization system.
 
 Built strictly on modern web standards with an **offline-first modular architecture**, FORMA runs with zero framework overhead, synchronizing seamlessly with a Supabase PostgreSQL backend for encrypted, real-time multi-device continuity.
+
+👉 **Launch the live web application:** [https://formelife.netlify.app/](https://formelife.netlify.app/)
 
 ---
 
@@ -221,6 +226,10 @@ forma_platform/
 ---
 
 ## 🚀 Getting Started
+
+### 🌐 Live Web Application
+You can access and use FORMA immediately in any web browser without installation:
+👉 **[https://formelife.netlify.app/](https://formelife.netlify.app/)**
 
 ### 1. Clone the Repository
 ```bash
