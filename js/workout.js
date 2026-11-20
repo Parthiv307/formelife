@@ -247,22 +247,13 @@
       });
 
       if (!state.workoutHistory) {
-        state.workoutHistory = [
-          { date: 'May 1', volume: 14200 },
-          { date: 'May 5', volume: 18500 },
-          { date: 'May 9', volume: 16800 },
-          { date: 'May 14', volume: 22100 },
-          { date: 'May 18', volume: 20400 },
-          { date: 'May 22', volume: 24500 },
-          { date: 'May 26', volume: 26800 }
-        ];
+        state.workoutHistory = [];
       }
 
-      const todayDateLabel = new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
       const completedWorkout = {
         id: Date.now(),
         title: state.activeWorkout.title,
-        date: todayDateLabel,
+        date: new Date().toISOString().split('T')[0],
         volume: sessionVolume,
         setsCount: sessionSets
       };

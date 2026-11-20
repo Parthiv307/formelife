@@ -5,16 +5,39 @@
     let chartMacroInstance = null;
     let chartWeightInstance = null;
 
+    function getRecentWorkoutChartData(workoutHistory = []) {
+      return (workoutHistory || [])
+        .filter(workout => workout && workout.date && Number.isFinite(Number(workout.volume)))
+        .slice()
+        .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime())
+        .slice(-7)
+        .reduce((data, workout) => {
+          const date = new Date(workout.date);
+          data.labels.push(Number.isNaN(date.getTime()) ? workout.date : date.toLocaleDateString(undefined, { month: 'short', day: 'numeric' }));
+          data.volumes.push(Number(workout.volume));
+          return data;
+        }, { labels: [], volumes: [] });
+    }
+
+    function updateWorkoutVolumeChart(workoutHistory) {
+      if (!chartVolumeInstance) return;
+      const data = getRecentWorkoutChartData(workoutHistory);
+      chartVolumeInstance.data.labels = data.labels;
+      chartVolumeInstance.data.datasets[0].data = data.volumes;
+      chartVolumeInstance.update();
+    }
+
     function initCharts() {
       // 1. Dashboard Volume Chart
       const vCtx = document.getElementById('chartDashVolume')?.getContext('2d');
       if (vCtx) {
+        const volumeData = getRecentWorkoutChartData(store.get().workoutHistory);
         chartVolumeInstance = new Chart(vCtx, {
           type: 'line',
           data: {
-            labels: ['May 1', 'May 5', 'May 9', 'May 14', 'May 18', 'May 22', 'May 26'],
+            labels: volumeData.labels,
             datasets: [{
-              data: [14200, 18500, 16800, 22100, 20400, 24500, 26800],
+              data: volumeData.volumes,
               borderColor: '#E5E5E7',
               borderWidth: 2,
               tension: 0.35,
@@ -237,12 +260,10 @@
 
       // 2. Live Training Volume & Active Workout State
       let weeklyVolume = 0;
-      const historyVolumes = [14200, 18500, 16800, 22100, 20400, 24500, 26800];
       if (state.workoutHistory && state.workoutHistory.length > 0) {
         weeklyVolume = state.workoutHistory.reduce((sum, s) => sum + (s.volume || 0), 0);
-      } else {
-        weeklyVolume = historyVolumes.reduce((a, b) => a + b, 0);
       }
+      updateWorkoutVolumeChart(state.workoutHistory);
 
       // If active workout has completed sets, add live volume
       if (state.activeWorkout) {
